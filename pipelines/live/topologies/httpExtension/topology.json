@@ -1,0 +1,131 @@
+{
+  "@apiVersion": "1.0",
+  "name": "InferencingWithHttpExtension",
+  "properties": {
+    "description": "Analyzing live video using HTTP Extension to send images to an external inference engine",
+    "parameters": [
+      {
+        "name": "rtspUserName",
+        "type": "String",
+        "description": "rtsp source user name.",
+        "default": "dummyUserName"
+      },
+      {
+        "name": "rtspPassword",
+        "type": "String",
+        "description": "rtsp source password.",
+        "default": "dummyPassword"
+      },
+      {
+        "name": "rtspUrl",
+        "type": "String",
+        "description": "rtsp Url"
+      },
+      {
+        "name": "inferencingUrl",
+        "type": "String",
+        "description": "inferencing Url",
+        "default": "http://yolov3/score"
+      },
+      {
+        "name": "inferencingUserName",
+        "type": "String",
+        "description": "inferencing endpoint user name.",
+        "default": "dummyUserName"
+      },
+      {
+        "name": "inferencingPassword",
+        "type": "String",
+        "description": "inferencing endpoint password.",
+        "default": "dummyPassword"
+      },
+      {
+        "name": "imageScaleMode",
+        "type": "String",
+        "description": "image scaling mode",
+        "default": "preserveAspectRatio"
+      },
+      {
+        "name": "frameWidth",
+        "type": "String",
+        "description": "Width of the video frame to be received from AVA.",
+        "default": "416"
+      },
+      {
+        "name": "frameHeight",
+        "type": "String",
+        "description": "Height of the video frame to be received from AVA.",
+        "default": "416"
+      }
+    ],
+    "sources": [
+      {
+        "@type": "#Microsoft.VideoAnalyzer.RtspSource",
+        "name": "rtspSource",
+        "transport": "tcp",
+        "endpoint": {
+          "@type": "#Microsoft.VideoAnalyzer.UnsecuredEndpoint",
+          "url": "${rtspUrl}",
+          "credentials": {
+            "@type": "#Microsoft.VideoAnalyzer.UsernamePasswordCredentials",
+            "username": "${rtspUserName}",
+            "password": "${rtspPassword}"
+          }
+        }
+      }
+    ],
+    "processors": [
+      {
+        "@type": "#Microsoft.VideoAnalyzer.HttpExtension",
+        "name": "httpExtension",
+        "endpoint": {
+          "@type": "#Microsoft.VideoAnalyzer.UnsecuredEndpoint",
+          "url": "${inferencingUrl}",
+          "credentials": {
+            "@type": "#Microsoft.VideoAnalyzer.UsernamePasswordCredentials",
+            "username": "${inferencingUserName}",
+            "password": "${inferencingPassword}"
+          }
+        },
+        "image": {
+          "scale": {
+            "mode": "${imageScaleMode}",
+            "width": "${frameWidth}",
+            "height": "${frameHeight}"
+          },
+          "format": {
+            "@type": "#Microsoft.VideoAnalyzer.ImageFormatBmp"
+          }
+        },
+        "samplingOptions": {
+          "skipSamplesWithoutAnnotation": "false",
+          "maximumSamplesPerSecond": "5"
+        },
+        "inputs": [
+          {
+            "nodeName": "rtspSource",
+            "outputSelectors": [
+              {
+                "property": "mediaType",
+                "operator": "is",
+                "value": "video"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "sinks": [
+      {
+        "@type": "#Microsoft.VideoAnalyzer.IoTHubMessageSink",
+        "name": "hubSink",
+        "hubOutputName": "inferenceOutput",
+        "inputs": [
+          {
+            "nodeName": "httpExtension"
+          }
+        ]
+      }
+    ]
+  }
+}
