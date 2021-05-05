@@ -2,7 +2,7 @@
   "@apiVersion": "1.0",
   "name": "EVROnMotionPlusGrpcExtension",
   "properties": {
-    "description": "Event-based video recording to Assets based on motion events, and using gRPC Extension to send images to an external inference engine",
+    "description": "Event-based video recording to Video Sink based on motion events, and using gRPC Extension to send images to an external inference engine",
     "parameters": [
       {
         "name": "rtspUserName",

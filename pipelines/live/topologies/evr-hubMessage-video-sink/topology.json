@@ -1,8 +1,8 @@
 {
   "@apiVersion": "1.0",
-  "name": "EVROnMotionPlusHttpExtension",
+  "name": "EVRtoVideoSinkOnObjDetect",
   "properties": {
-    "description": "Event-based video recording to Video Sink based on motion events, and using HTTP Extension to send images to an external inference engine",
+    "description": "Event-based video recording to Video Sink based on specific objects being detected by external inference engine",
     "parameters": [
       {
         "name": "rtspUserName",
@@ -22,40 +22,34 @@
         "description": "rtsp Url"
       },
       {
-        "name": "motionSensitivity",
+        "name": "hubSourceInput",
         "type": "String",
-        "description": "motion detection sensitivity",
-        "default": "medium"
+        "description": "input name for hub source",
+        "default": "recordingTrigger"
       },
       {
-        "name": "httpAIServerAddress",
+        "name": "inferencingUrl",
         "type": "String",
-        "description": "AI Server Address",
+        "description": "inferencing Url",
         "default": "http://yolov3/score"
+      },
+      {
+        "name": "inferencingUserName",
+        "type": "String",
+        "description": "inferencing endpoint user name.",
+        "default": "dummyUserName"
+      },
+      {
+        "name": "inferencingPassword",
+        "type": "String",
+        "description": "inferencing endpoint password.",
+        "default": "dummyPassword"
       },
       {
         "name": "hubSinkOutputName",
         "type": "String",
         "description": "hub sink output name",
-        "default": "inferenceOutput"
-      },
-      {
-        "name": "imageScaleMode",
-        "type": "String",
-        "description": "image scaling mode",
-        "default": "preserveAspectRatio"
-      },
-      {
-        "name": "frameWidth",
-        "type": "String",
-        "description": "Width of the video frame to be received from AVA.",
-        "default": "416"
-      },
-      {
-        "name": "frameHeight",
-        "type": "String",
-        "description": "Height of the video frame to be received from AVA.",
-        "default": "416"
+        "default": "detectedObjects"
       }
     ],
     "sources": [
@@ -71,66 +65,47 @@
             "password": "${rtspPassword}"
           }
         }
+      },
+      {
+        "@type": "#Microsoft.VideoAnalyzer.IoTHubMessageSource",
+        "name": "iotMessageSource",
+        "hubInputName": "${hubSourceInput}"
       }
     ],
     "processors": [
-      {
-        "@type": "#Microsoft.VideoAnalyzer.MotionDetectionProcessor",
-        "name": "motionDetection",
-        "sensitivity": "${motionSensitivity}",
-        "inputs": [
-          {
-            "nodeName": "rtspSource",
-            "outputSelectors": [
-              {
-                "property": "mediaType",
-                "operator": "is",
-                "value": "video"
-              }
-            ]
-          }
-        ]
-      },
       {
         "@type": "#Microsoft.VideoAnalyzer.SignalGateProcessor",
         "name": "signalGateProcessor",
         "inputs": [
           {
-            "nodeName": "motionDetection"
+            "nodeName": "iotMessageSource"
           },
           {
-            "nodeName": "rtspSource",
-            "outputSelectors": [
-              {
-                "property": "mediaType",
-                "operator": "is",
-                "value": "video"
-              }
-            ]
+            "nodeName": "rtspSource"
           }
         ],
         "activationEvaluationWindow": "PT1S",
-        "activationSignalOffset": "PT0S",
+        "activationSignalOffset": "-PT5S",
         "minimumActivationTime": "PT30S",
         "maximumActivationTime": "PT30S"
       },
       {
         "@type": "#Microsoft.VideoAnalyzer.HttpExtension",
-        "name": "httpExtension",
+        "name": "inferenceClient",
         "endpoint": {
           "@type": "#Microsoft.VideoAnalyzer.UnsecuredEndpoint",
-          "url": "${httpAIServerAddress}",
+          "url": "${inferencingUrl}",
           "credentials": {
             "@type": "#Microsoft.VideoAnalyzer.UsernamePasswordCredentials",
-            "username": "user",
-            "password": "test123"
+            "username": "${inferencingUserName}",
+            "password": "${inferencingPassword}"
           }
         },
         "image": {
           "scale": {
-            "mode": "${imageScaleMode}",
-            "width": "${frameWidth}",
-            "height": "${frameHeight}"
+            "mode": "pad",
+            "width": "416",
+            "height": "416"
           },
           "format": {
             "@type": "#Microsoft.VideoAnalyzer.ImageFormatBmp"
@@ -156,9 +131,19 @@
     ],
     "sinks": [
       {
+        "@type": "#Microsoft.VideoAnalyzer.IoTHubMessageSink",
+        "name": "hubSink",
+        "hubOutputName": "${hubSinkOutputName}",
+        "inputs": [
+          {
+            "nodeName": "inferenceClient"
+          }
+        ]
+      },
+      {
         "@type": "#Microsoft.VideoAnalyzer.VideoSink",
         "name": "videoSink",
-        "videoName": "sample-motion-with-http-extension",
+        "videoName": "sample-hub-messages-video-sink",
         "inputs": [
           {
             "nodeName": "signalGateProcessor",
@@ -172,22 +157,12 @@
           }
         ],
         "videoCreationProperties": {
-          "title": "sample-motion-with-http-extension",
-          "description": "Sample video using motion with HTTP extension",
+          "title": "sample-hub-messages-video-sink",
+          "description": "Sample video using hub messages to video sink",
           "segmentLength": "PT30S"
         },
         "localMediaCachePath": "/var/lib/videoanalyzer/tmp/",
         "localMediaCacheMaximumSizeMiB": "2048"
-      },
-      {
-        "@type": "#Microsoft.VideoAnalyzer.IoTHubMessageSink",
-        "name": "hubSink",
-        "hubOutputName": "${hubSinkOutputName}",
-        "inputs": [
-          {
-            "nodeName": "httpExtension"
-          }
-        ]
       }
     ]
   }

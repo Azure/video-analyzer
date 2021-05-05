@@ -1,0 +1,118 @@
+{
+    "@apiVersion": "1.0",
+    "name":"ObjectTrackingWithHttpExtension",
+    "properties":{
+        "description":"My Description",
+        "parameters":[
+            {
+                "name":"rtspUrl",
+                "type":"string",
+                "description":"rtspUrl"
+            },
+            {
+                "name":"rtspUserName",
+                "type":"string",
+                "description":"rtspUserName"
+            },
+            {
+                "name":"rtspPassword",
+                "type":"string",
+                "description":"rtspPassword"
+            },
+            {
+                "name":"inferenceUrl",
+                "type":"string",
+                "description":"inferenceUrl",
+                "default": "http://yolov3/score"
+            },
+            {
+                "name":"inferenceUrlPassword",
+                "type":"string",
+                "description":"inferenceUrlPassword",
+                "default": "dummyPassword"
+            },
+            {
+                "name":"inferenceUrlUsername",
+                "type":"string",
+                "description":"inferenceUrlUsername",
+                "default": "dummyUserName"
+            },
+            {
+                "name":"hubSinkOutputName",
+                "type":"string",
+                "description":"hub sink output name",
+                "default": "iothubsinkoutput"
+            }
+        ],
+        "sources":[
+            {
+                "@type":"#Microsoft.VideoAnalyzer.RtspSource",
+                "name":"rtspSource",
+                "transport":"tcp",
+                "endpoint":{
+                    "@type":"#Microsoft.VideoAnalyzer.UnsecuredEndpoint",
+                    "credentials":{
+                        "@type":"#Microsoft.VideoAnalyzer.UsernamePasswordCredentials",
+                        "username":"${rtspUserName}",
+                        "password":"${rtspPassword}"
+                    },
+                    "url":"${rtspUrl}"
+                }
+            }
+        ],
+        "processors":[
+            {
+                "@type":"#Microsoft.VideoAnalyzer.HttpExtension",
+                "name":"httpExtension",
+                "inputs":[
+                    {
+                        "nodeName":"rtspSource"
+                    }
+                ],
+                "endpoint":{
+                    "@type":"#Microsoft.VideoAnalyzer.UnsecuredEndpoint",
+                    "credentials":{
+                        "@type":"#Microsoft.VideoAnalyzer.UsernamePasswordCredentials",
+                        "username":"${inferenceUrlUsername}",
+                        "password":"${inferenceUrlPassword}"
+                    },
+                    "url":"${inferenceUrl}"
+                },
+                "image":{
+                    "scale":{
+                        "width":"416",
+                        "height":"416"
+                    },
+                    "format": {
+                        "@type": "#Microsoft.VideoAnalyzer.ImageFormatBmp"
+                    }
+                },
+                "samplingOptions":{
+                    "skipSamplesWithoutAnnotation":"False",
+                    "maximumSamplesPerSecond":"2.0"
+                }
+            },
+            {
+                "@type":"#Microsoft.VideoAnalyzer.ObjectTrackingProcessor",
+                "name":"objectTracker",
+                "inputs":[
+                    {
+                        "nodeName":"httpExtension"
+                    }
+                ]
+            }
+        ],
+        "sinks":[
+            {
+                "hubOutputName":"${hubSinkOutputName}",
+                "@type":"#Microsoft.VideoAnalyzer.IotHubMessageSink",
+                "name":"iotHubSink",
+                "inputs":[
+                    {
+                        "nodeName":"objectTracker"
+                    }
+                ]
+            }
+        ]
+    }
+}

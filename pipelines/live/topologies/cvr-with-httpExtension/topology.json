@@ -46,10 +46,10 @@
         "default": "inferenceOutput"
       },
       {
-        "name": "assetName",
+        "name": "videoSinkName",
         "type": "String",
-        "description": "asset name",
-        "default": "sampleAssetFromCVR-AVAEdge"
+        "description": "video sink name",
+        "default": "sampleVideoSinkFromCVR-AVAEdge"
       }
     ],
     "sources": [
