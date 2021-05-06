@@ -1,0 +1,134 @@
+{
+  "@apiVersion": "1.0",
+  "name": "InferencingWithCVExtensionCustom",
+  "properties": {
+    "description": "Analyzing Live Video with Computer Vision for Spatial Analysis",
+    "parameters": [
+      {
+        "name": "rtspUserName",
+        "type": "String",
+        "description": "rtsp source user name.",
+        "default": "dummyUserName"
+      },
+      {
+        "name": "rtspPassword",
+        "type": "String",
+        "description": "rtsp source password.",
+        "default": "dummyPassword"
+      },
+      {
+        "name": "rtspUrl",
+        "type": "String",
+        "description": "rtsp Url"
+      },
+      {
+        "name": "grpcUrl",
+        "type": "String",
+        "description": "inferencing Url",
+        "default": "tcp://spatialanalysis:50051"
+      },
+      {
+        "name": "spatialanalysisusername",
+        "type": "String",
+        "description": "spatialanalysis endpoint username",
+        "default": "not-in-use"
+      },
+      {
+        "name": "spatialanalysispassword",
+        "type": "String",
+        "description": "spatialanalysis endpoint password",
+        "default": "not-in-use"
+      }
+    ],
+    "sources": [
+      {
+        "@type": "#Microsoft.VideoAnalyzer.RtspSource",
+        "name": "rtspSource",
+        "transport": "tcp",
+        "endpoint": {
+          "@type": "#Microsoft.VideoAnalyzer.UnsecuredEndpoint",
+          "url": "${rtspUrl}",
+          "credentials": {
+            "@type": "#Microsoft.VideoAnalyzer.UsernamePasswordCredentials",
+            "username": "${rtspUserName}",
+            "password": "${rtspPassword}"
+          }
+        }
+      }
+    ],
+    "processors": [
+      {
+        "@type": "#Microsoft.VideoAnalyzer.CognitiveServicesVisionProcessor",
+        "name": "computerVisionExtension",
+        "endpoint": {
+          "@type": "#Microsoft.VideoAnalyzer.UnsecuredEndpoint",
+          "url": "${grpcUrl}",
+          "credentials": {
+            "@type": "#Microsoft.VideoAnalyzer.UsernamePasswordCredentials",
+            "username": "${spatialanalysisusername}",
+            "password": "${spatialanalysispassword}"
+          }
+        },
+        "image": {
+          "format": {
+            "@type": "#Microsoft.VideoAnalyzer.ImageFormatRaw",
+            "pixelFormat": "bgr24"
+          }
+        },
+        "samplingOptions": {
+          "skipSamplesWithoutAnnotation": "false",
+          "maximumSamplesPerSecond": "15"
+        },
+        "inputs": [
+          {
+            "nodeName": "rtspSource",
+            "outputSelectors": [
+              {
+                "property": "mediaType",
+                "operator": "is",
+                "value": "video"
+              }
+            ]
+          }
+        ],
+        "operation": {
+          "@type": "#Microsoft.VideoAnalyzer.SpatialAnalysisCustomOperation",
+
+          "extensionConfiguration": "{\"version\":1,\"enabled\":true,\"platformloglevel\":\"info\",\"operationId\":\"cognitiveservices.vision.spatialanalysis-personcount.azurevideoanalytics\",\"parameters\":{\"VISUALIZER_NODE_CONFIG\":\"{\\\"show_debug_video\\\":false}\",\"SINK_CONFIG\":\"{\\\"raw_output\\\":false}\",\"ENABLE_FACE_MASK_CLASSIFIER\":false,\"DETECTOR_NODE_CONFIG\":\"{\\\"gpu_index\\\":0,\\\"batch_size\\\":1}\",\"SPACEANALYTICS_CONFIG\":\"{\\\"zones\\\":[{\\\"name\\\":\\\"stairlanding\\\",\\\"polygon\\\":[[0.37,0.43],[0.48,0.42],[0.53,0.56],[0.34,0.57],[0.34,0.46],[0.37,0.43]],\\\"events\\\":[{\\\"type\\\":\\\"count\\\",\\\"config\\\":{\\\"trigger\\\":\\\"event\\\",\\\"output_frequency\\\":3,\\\"threshold\\\":16.0,\\\"focus\\\":\\\"bottom_center\\\"}}]}]}\",\"ENABLE_FACE_MASK_CLASSIFIER\":false},\"nodesLogLevel\":\"info\",\"platformLogLevel\":\"info\"}"
+        }
+      }
+    ],
+    "sinks": [
+      {
+        "@type": "#Microsoft.VideoAnalyzer.IoTHubMessageSink",
+        "name": "hubSink",
+        "hubOutputName": "inferenceOutput",
+        "inputs": [
+          {
+            "nodeName": "computerVisionExtension"
+          }
+        ]
+      },
+      {
+        "@type": "#Microsoft.VideoAnalyzer.VideoSink",
+        "name": "videoSink",
+        "videoName": "customoperation-04152021",
+        "inputs": [
+          {
+            "nodeName": "rtspSource"
+          },
+          {
+            "nodeName": "computerVisionExtension"
+          }
+        ],
+        "videoCreationProperties": {
+          "title": "customoperation-04152021",
+          "description": "Sample video using SA custom operation",
+          "segmentLength": "PT30S"
+        },
+        "localMediaCachePath": "/var/lib/videoanalyzer/tmp/",
+        "localMediaCacheMaximumSizeMiB": "2048"
+      }
+    ]
+  }
+}

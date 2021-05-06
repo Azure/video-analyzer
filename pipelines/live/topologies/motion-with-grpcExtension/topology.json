@@ -1,0 +1,217 @@
+{
+  "@apiVersion": "1.0",
+  "name": "EVROnMotionPlusGrpcExtension",
+  "properties": {
+    "description": "Event-based video recording to Video Sink based on motion events, and using gRPC Extension to send images to an external inference engine",
+    "parameters": [
+      {
+        "name": "rtspUserName",
+        "type": "String",
+        "description": "rtsp source user name.",
+        "default": "dummyUserName"
+      },
+      {
+        "name": "rtspPassword",
+        "type": "String",
+        "description": "rtsp source password.",
+        "default": "dummyPassword"
+      },
+      {
+        "name": "rtspUrl",
+        "type": "String",
+        "description": "rtsp Url"
+      },
+      {
+        "name": "motionSensitivity",
+        "type": "String",
+        "description": "motion detection sensitivity",
+        "default": "medium"
+      },
+      {
+        "name": "grpcExtensionAddress",
+        "type": "String",
+        "description": "grpc AVA Extension Address",
+        "default": "tcp://avaextension:44000"
+      },
+      {
+        "name": "grpcExtensionUserName",
+        "type": "String",
+        "description": "inferencing endpoint user name.",
+        "default": "dummyUserName"
+      },
+      {
+        "name": "grpcExtensionPassword",
+        "type": "String",
+        "description": "inferencing endpoint password.",
+        "default": "dummyPassword"
+      },
+      {
+        "name": "hubSinkOutputName",
+        "type": "String",
+        "description": "Hub sink output name",
+        "default": "iothubsinkoutput"
+      },
+      {
+        "name": "imageQuality",
+        "type": "String",
+        "description": "image encoding quality for frames (valid for JPG encoding)",
+        "default": "90"
+      },
+      {
+        "name": "imageScaleMode",
+        "type": "String",
+        "description": "image scaling mode",
+        "default": "pad"
+      },
+      {
+        "name": "frameWidth",
+        "type": "String",
+        "description": "Width of the video frame to be received from AVA.",
+        "default": "416"
+      },
+      {
+        "name": "frameHeight",
+        "type": "String",
+        "description": "Height of the video frame to be received from AVA.",
+        "default": "416"
+      }
+    ],
+    "sources": [
+      {
+        "@type": "#Microsoft.VideoAnalyzer.RtspSource",
+        "name": "rtspSource",
+        "endpoint": {
+          "@type": "#Microsoft.VideoAnalyzer.UnsecuredEndpoint",
+          "url": "${rtspUrl}",
+          "credentials": {
+            "@type": "#Microsoft.VideoAnalyzer.UsernamePasswordCredentials",
+            "username": "${rtspUserName}",
+            "password": "${rtspPassword}"
+          }
+        }
+      }
+    ],
+    "processors": [
+      {
+        "@type": "#Microsoft.VideoAnalyzer.MotionDetectionProcessor",
+        "name": "motionDetection",
+        "sensitivity": "${motionSensitivity}",
+        "inputs": [
+          {
+            "nodeName": "rtspSource",
+            "outputSelectors": [
+              {
+                "property": "mediaType",
+                "operator": "is",
+                "value": "video"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "@type": "#Microsoft.VideoAnalyzer.SignalGateProcessor",
+        "name": "signalGateProcessor",
+        "inputs": [
+          {
+            "nodeName": "motionDetection"
+          },
+          {
+            "nodeName": "rtspSource",
+            "outputSelectors": [
+              {
+                "property": "mediaType",
+                "operator": "is",
+                "value": "video"
+              }
+            ]
+          }
+        ],
+        "activationEvaluationWindow": "PT1S",
+        "activationSignalOffset": "PT0S",
+        "minimumActivationTime": "PT30S",
+        "maximumActivationTime": "PT30S"
+      },
+      {
+        "@type": "#Microsoft.VideoAnalyzer.GrpcExtension",
+        "name": "grpcExtension",
+        "endpoint": {
+          "@type": "#Microsoft.VideoAnalyzer.UnsecuredEndpoint",
+          "url": "${grpcExtensionAddress}",
+          "credentials": {
+            "@type": "#Microsoft.VideoAnalyzer.UsernamePasswordCredentials",
+            "username": "${grpcExtensionUserName}",
+            "password": "${grpcExtensionPassword}"
+          }
+        },
+        "dataTransfer": {
+          "mode": "sharedMemory",
+          "SharedMemorySizeMiB": "75"
+        },
+        "image": {
+          "scale": {
+            "mode": "${imageScaleMode}",
+            "width": "${frameWidth}",
+            "height": "${frameHeight}"
+          },
+          "format": {
+            "@type": "#Microsoft.VideoAnalyzer.ImageFormatJpeg",
+            "quality": "${imageQuality}"
+          }
+        },
+        "samplingOptions": {
+          "skipSamplesWithoutAnnotation": "false",
+          "maximumSamplesPerSecond": "30"
+        },
+        "inputs": [
+          {
+            "nodeName": "rtspSource",
+            "outputSelectors": [
+              {
+                "property": "mediaType",
+                "operator": "is",
+                "value": "video"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "sinks": [
+      {
+        "@type": "#Microsoft.VideoAnalyzer.VideoSink",
+        "name": "videoSink",
+        "videoName": "sample-motion-with-grpc-extension",
+        "inputs": [
+          {
+            "nodeName": "signalGateProcessor",
+            "outputSelectors": [
+              {
+                "property": "mediaType",
+                "operator": "is",
+                "value": "video"
+              }
+            ]
+          }
+        ],
+        "videoCreationProperties": {
+          "title": "sample-motion-with-grpc-extension",
+          "description": "Sample video using motion with gRPC extension",
+          "segmentLength": "PT30S"
+        },
+        "localMediaCachePath": "/var/lib/videoanalyzer/tmp/",
+        "localMediaCacheMaximumSizeMiB": "2048"
+      },
+      {
+        "@type": "#Microsoft.VideoAnalyzer.IoTHubMessageSink",
+        "name": "hubSink",
+        "hubOutputName": "${hubSinkOutputName}",
+        "inputs": [
+          {
+            "nodeName": "grpcExtension"
+          }
+        ]
+      }
+    ]
+  }
+}
