@@ -1,0 +1,216 @@
+{
+  "@apiVersion": "1.0",
+  "name": "InferencingWithGrpcExtension",
+  "properties": {
+    "description": "Record on motion to AMS Asset and record events from external models through gRPC Extension",
+    "parameters": [
+      {
+        "name": "rtspUrl",
+        "type": "String",
+        "description": "Rtsp source Url address"
+      },
+      {
+        "name": "rtspUserName",
+        "type": "String",
+        "description": "Rtsp source user name.",
+        "default": "dummyUsername"
+      },
+      {
+        "name": "rtspPassword",
+        "type": "String",
+        "description": "Rtsp source password.",
+        "default": "dummyPassword"
+      },
+      {
+        "name": "motionSensitivity",
+        "type": "String",
+        "description": "Motion detection sensitivity",
+        "default": "medium"
+      },
+      {
+        "name": "grpcExtensionAddress",
+        "type": "String",
+        "description": "grpc AVA Extension Address",
+        "default": "tcp://avaextension:5001"
+      },
+      {
+        "name": "grpcExtensionUserName",
+        "type": "String",
+        "description": "inferencing endpoint user name.",
+        "default": "dummyUserName"
+      },
+      {
+        "name": "grpcExtensionPassword",
+        "type": "String",
+        "description": "inferencing endpoint password.",
+        "default": "dummyPassword"
+      },
+      {
+        "name": "hubSinkOutputName",
+        "type": "String",
+        "description": "Hub sink output name",
+        "default": "iothubsinkoutput"
+      },
+      {
+        "name": "imageQuality",
+        "type": "String",
+        "description": "image encoding quality for frames (valid for JPG encoding)",
+        "default": "90"
+      },
+      {
+        "name": "imageScaleMode",
+        "type": "String",
+        "description": "image scaling mode",
+        "default": "pad"
+      },
+      {
+        "name": "frameWidth",
+        "type": "String",
+        "description": "Width of the video frame to be received from AVA.",
+        "default": "416"
+      },
+      {
+        "name": "frameHeight",
+        "type": "String",
+        "description": "Height of the video frame to be received from AVA.",
+        "default": "416"
+      },
+      {
+        "name": "imageRawFormat",
+        "type": "String",
+        "description": "image format",
+        "default": "bgr24"
+      }
+    ],
+    "sources": [
+      {
+        "@type": "#Microsoft.Media.MediaGraphRtspSource",
+        "name": "rtspSource",
+        "endpoint": {
+          "@type": "#Microsoft.Media.MediaGraphUnsecuredEndpoint",
+          "url": "${rtspUrl}",
+          "credentials": {
+            "@type": "#Microsoft.Media.MediaGraphUsernamePasswordCredentials",
+            "username": "${rtspUserName}",
+            "password": "${rtspPassword}"
+          }
+        }
+      }
+    ],
+    "processors": [
+      {
+        "@type": "#Microsoft.Media.MediaGraphMotionDetectionProcessor",
+        "name": "motionDetection",
+        "sensitivity": "${motionSensitivity}",
+        "inputs": [
+          {
+            "nodeName": "rtspSource",
+            "outputSelectors": [
+              {
+                "property": "mediaType",
+                "operator": "is",
+                "value": "video"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "@type": "#Microsoft.Media.MediaGraphSignalGateProcessor",
+        "name": "signalGateProcessor",
+        "inputs": [
+          {
+            "nodeName": "motionDetection"
+          },
+          {
+            "nodeName": "rtspSource",
+            "outputSelectors": [
+              {
+                "property": "mediaType",
+                "operator": "is",
+                "value": "video"
+              }
+            ]
+          }
+        ],
+        "activationEvaluationWindow": "PT1S",
+        "activationSignalOffset": "PT0S",
+        "minimumActivationTime": "PT15S",
+        "maximumActivationTime": "PT15S"
+      },
+      {
+        "@type": "#Microsoft.Media.MediaGraphGrpcExtension",
+        "name": "grpcExtension",
+        "endpoint": {
+          "@type": "#Microsoft.Media.MediaGraphUnsecuredEndpoint",
+          "url": "${grpcExtensionAddress}",
+          "credentials": {
+            "@type": "#Microsoft.Media.MediaGraphUsernamePasswordCredentials",
+            "username": "${grpcExtensionUserName}",
+            "password": "${grpcExtensionPassword}"
+          }
+        },
+        "dataTransfer": {
+          "mode": "sharedMemory",
+          "SharedMemorySizeMiB": "75"
+        },
+        "samplingOptions": {
+          "skipSamplesWithoutAnnotation": "false",
+          "maximumSamplesPerSecond": "20"
+        },
+        "image": {
+          "scale": {
+            "mode": "${imageScaleMode}",
+            "width": "${frameWidth}",
+            "height": "${frameHeight}"
+          },
+          "format": {
+            "@type": "#Microsoft.Media.MediaGraphImageFormatRaw",
+            "pixelFormat": "${imageRawFormat}"
+          }
+        },
+        "inputs": [
+          {
+            "nodeName": "motionDetection"
+          }
+        ]
+      }
+    ],
+    "sinks": [
+      {
+        "@type": "#Microsoft.VideoAnalyzer.VideoSink",
+        "name": "videoSink",
+        "videoName": "sample-motion-with-grpc-extension",
+        "inputs": [
+          {
+            "nodeName": "signalGateProcessor",
+            "outputSelectors": [
+              {
+                "property": "mediaType",
+                "operator": "is",
+                "value": "video"
+              }
+            ]
+          }
+        ],
+        "videoCreationProperties": {
+          "title": "sample-motion-with-grpc-extension",
+          "description": "Sample video using motion with gRPC extension",
+          "segmentLength": "PT30S"
+        },
+        "localMediaCachePath": "/var/lib/videoanalyzer/tmp/",
+        "localMediaCacheMaximumSizeMiB": "2048"
+      },
+      {
+        "@type": "#Microsoft.Media.MediaGraphIoTHubMessageSink",
+        "name": "hubSink",
+        "hubOutputName": "${hubSinkOutputName}",
+        "inputs": [
+          {
+            "nodeName": "grpcExtension"
+          }
+        ]
+      }
+    ]
+  }
+}

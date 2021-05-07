@@ -1,0 +1,168 @@
+{
+  "$schema-template": "2.0.0",
+  "modulesContent": {
+    "$edgeAgent": {
+      "properties.desired": {
+        "schemaVersion": "1.0",
+        "runtime": {
+          "type": "docker",
+          "settings": {
+            "minDockerVersion": "v1.25",
+            "loggingOptions": "",
+            "registryCredentials": {}
+          }
+        },
+        "systemModules": {
+          "edgeAgent": {
+            "type": "docker",
+            "settings": {
+              "image": "mcr.microsoft.com/azureiotedge-agent:1.1",
+              "createOptions": {}
+            }
+          },
+          "edgeHub": {
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "mcr.microsoft.com/azureiotedge-hub:1.1",
+              "createOptions": {
+                "HostConfig": {
+                  "PortBindings": {
+                    "5671/tcp": [
+                      {
+                        "HostPort": "5671"
+                      }
+                    ],
+                    "8883/tcp": [
+                      {
+                        "HostPort": "8883"
+                      }
+                    ],
+                    "443/tcp": [
+                      {
+                        "HostPort": "443"
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "env": {
+              "UpstreamProtocol": {
+                "value": "AMQPWS"
+              }
+            }
+          }
+        },
+        "modules": {
+          "avaedge": {
+            "version": "1.1",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "mcr.microsoft.com/media/live-video-analytics:2",
+              "createOptions": {
+                "HostConfig": {
+                  "LogConfig": {
+                    "Type": "",
+                    "Config": {
+                      "max-size": "10m",
+                      "max-file": "10"
+                    }
+                  },
+                  "IpcMode": "host"
+                }
+              }
+            }
+          },
+          "rtspsim": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "mcr.microsoft.com/lva-utilities/rtspsim-live555:1.2",
+              "createOptions": {
+                "HostConfig": {
+                  "Binds": [
+                    "$VIDEO_INPUT_FOLDER_ON_DEVICE:/live/mediaServer/media"
+                  ]
+                }
+              }
+            }
+          },
+          "avaextension": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "<IMAGE_URI>",
+              "createOptions": {
+                "ExposedPorts": {
+                  "80/tcp": {},
+                  "5001/tcp": {}
+                },
+                "Env": [
+                  "MJPEG_OUTPUT=1",
+                  "GST_CONFIG_FILE=inference.txt",
+                  "GST_CLASSIFICATION_FILES=car_color.txt,car_type.txt",
+                  "GST_TRACKER_FILE=tracker.txt"
+                ],
+                "HostConfig": {
+                  "PortBindings": {
+                    "80/tcp": [
+                      {
+                        "HostPort": "8080"
+                      }
+                    ],
+                    "5001/tcp": [
+                      {
+                        "HostPort": "5001"
+                      }
+                    ]
+                  },
+                  "LogConfig": {
+                    "Type": "",
+                    "Config": {
+                      "max-size": "10m",
+                      "max-file": "10"
+                    }
+                  },
+                  "IpcMode": "host",
+                  "Runtime": "nvidia"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "$edgeHub": {
+      "properties.desired": {
+        "schemaVersion": "1.0",
+        "routes": {
+          "AVAToHub": "FROM /messages/modules/avaedge/outputs/* INTO $upstream"
+        },
+        "storeAndForwardConfiguration": {
+          "timeToLiveSecs": 7200
+        }
+      }
+    },
+    "avaedge": {
+      "properties.desired": {
+        "applicationDataDirectory": "/var/lib/videoAnalyzer",
+        "ProvisioningToken": "$AVA_PROVISIONING_TOKEN",
+        "diagnosticsEventsOutputName": "diagnostics",
+        "operationalEventsOutputName": "operational",
+        "logLevel": "verbose",
+        "logCategories": "application,events,mediaPipeline",
+        "debugLogsDirectory": "/tmp/logs",
+        "allowUnsecuredEndpoints": true,
+        "telemetryOptOut": false
+      }
+    }
+  }
+}
