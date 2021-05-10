@@ -111,7 +111,7 @@
     ],
     "sinks": [
       {
-        "@type": "#Microsoft.VideoAnalyzer.IoTHubMessageSink",
+        "@type": "#Microsoft.VideoAnalyzer.IotHubMessageSink",
         "name": "hubSink",
         "hubOutputName": "${hubSinkOutputName}",
         "inputs": [

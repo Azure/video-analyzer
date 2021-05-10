@@ -69,16 +69,6 @@
             "password": "${spatialanalysispassword}"
           }
         },
-        "image": {
-          "format": {
-            "@type": "#Microsoft.VideoAnalyzer.ImageFormatRaw",
-            "pixelFormat": "bgr24"
-          }
-        },
-        "samplingOptions": {
-          "skipSamplesWithoutAnnotation": "false",
-          "maximumSamplesPerSecond": "15"
-        },
         "inputs": [
           {
             "nodeName": "rtspSource",
@@ -100,7 +90,7 @@
     ],
     "sinks": [
       {
-        "@type": "#Microsoft.VideoAnalyzer.IoTHubMessageSink",
+        "@type": "#Microsoft.VideoAnalyzer.IotHubMessageSink",
         "name": "hubSink",
         "hubOutputName": "inferenceOutput",
         "inputs": [
