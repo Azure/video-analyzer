@@ -93,7 +93,7 @@
               "events": [
                 {
                   "trigger": "event",
-                  "outputFrequency": "3",
+                  "outputFrequency": "1",
                   "threshold": "48.00",
                   "focus": "bottomCenter",
                   "minimumDistanceThreshold": "1.5",
