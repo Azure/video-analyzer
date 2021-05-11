@@ -7,8 +7,8 @@ The OpenVINO™ Model Server (OVMS) is an inference server that’s highly optim
 To build the container image please see these [instructions](https://github.com/openvinotoolkit/model_server/tree/master/extras/ams_wrapper). 
 
 > <span> [!TIP] </span>  
-> If you do not wish to build the local Dockerfile, you may pull it off of the [Azure Marketplace](https://aka.ms/lva-intel-ovms)
+> If you do not wish to build the local Dockerfile, you may pull it off of the [Azure Marketplace](https://aka.ms/ava-intel-ovms)
 
 
 ## Running and testing
-A full fledged [tutorial](https://aka.ms/lva-intel-ovms-tutorial) is available to learn more about how to use this module.
+A full fledged [tutorial](https://aka.ms/ava-intel-ovms-tutorial) is available to learn more about how to use this module.
