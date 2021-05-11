@@ -24,7 +24,7 @@ YOLOv3:
 
 > <span> [!TIP] </span>  
 > If you do not wish to build the local Dockerfile, you may pull it off of Microsoft Container Registry and skip the following step <br>
-> `docker run --name my_yolo_container -p 8080:80 -d  -i mcr.microsoft.com/lva-utilities/avaextension:grpc-yolov3-onnx-v1.0`
+> `docker run --name my_yolo_container -p 8080:80 -d  -i mcr.microsoft.com/lva-utilities/lvaextension:grpc-yolov3-onnx-v1.0`
 
 ## Running and testing
 Please see [this](https://aka.ms/ava-grpc-quickstart) quickstart.
