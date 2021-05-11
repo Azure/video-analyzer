@@ -1,6 +1,6 @@
 # Connection contracts
 
-This folder has AVA edge related connection contracts
+This folder has Azure Video Analyzer edge related connection contracts
 
 ## Contents
 
