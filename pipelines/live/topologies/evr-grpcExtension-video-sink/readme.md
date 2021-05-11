@@ -4,6 +4,6 @@ This topology enables you to perform event-based recording. When an event of int
 
 <br>
 <p align="center">
-  <img src="./topology.png" title="Event-based video recording toAVA Video based on events from external AI"/>
+  <img src="./topology.png" title="Event-based video recording to AVA Video based on events from external AI"/>
 </p>
 <br>

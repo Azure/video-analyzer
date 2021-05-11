@@ -2,7 +2,7 @@
   "@apiVersion": "1.0",
   "name": "CVRWithHttpExtension",
   "properties": {
-    "description": "Continuous video recording and inferencing using HTTP Graph Extension",
+    "description": "Continuous video recording and inferencing using HTTP Extension",
     "parameters": [
       {
         "name": "rtspUserName",

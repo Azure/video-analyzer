@@ -50,8 +50,8 @@
             "outputSelectors": [
               {
                 "property": "mediaType",
-                "operator": "is",
-                "value": "video"
+                "operator": "isNot",
+                "value": "application"
               }
             ]
           }
