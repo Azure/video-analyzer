@@ -155,4 +155,4 @@ Follow instructions in [Push and Pull Docker images - Azure Container Registry](
 
 ## Deploy as an Azure IoT Edge module
 
-Follow instruction in [Deploy module from Azure portal](https://docs.microsoft.com/en-us/azure/iot-edge/how-to-deploy-modules-portal) to deploy the container image as an IoT Edge module (use the IoT Edge module option).
+Follow instruction in [Deploy module from Azure portal](https://docs.microsoft.com/azure/iot-edge/how-to-deploy-modules-portal) to deploy the container image as an IoT Edge module (use the IoT Edge module option).
