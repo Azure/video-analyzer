@@ -1,8 +1,8 @@
 # Intel OpenVINO DL Streamer - Edge AI Extension
 
-The [OpenVINO™ DL Streamer - Edge AI Extension](https://aka.ms/ava-intel-openvino-dl-streamer) module is a microservice based on Intel’s [Video Analytics Serving (VA Serving)](https://github.com/intel/video-analytics-serving/blob/master/README.md) that serves video analytics pipelines built with OpenVINO™ DL Streamer. Developers can send decoded video frames to the AI extension module which performs detection, classification, or tracking and returns the results. The AI extension module exposes gRPC APIs that are compatible with video analytics platforms like Live Video Analytics on IoT Edge from Microsoft.
+The [OpenVINO™ DL Streamer - Edge AI Extension](https://aka.ms/ava-intel-openvino-dl-streamer) module is a microservice based on Intel’s [Video Analytics Serving (VA Serving)](https://github.com/intel/video-analytics-serving/blob/master/README.md) that serves video analytics pipelines built with OpenVINO™ DL Streamer. Developers can send decoded video frames to the AI extension module which performs detection, classification, or tracking and returns the results. The AI extension module exposes gRPC APIs that are compatible with video analytics platforms like Azure Video Analyzer edge module from Microsoft.
 
-In order to build complex, high-performance live video analytics solutions, the Live Video Analytics on IoT Edge module should be paired with a powerful inference engine that can leverage the scale at the edge. In this tutorial, inference requests are sent to the Intel OpenVINO™ DL Streamer – Edge AI Extension, an Edge module that has been designed to work with Live Video Analytics on IoT Edge.
+In order to build complex, high-performance live video analytics solutions, the Azure Video Analyzer edge module module should be paired with a powerful inference engine that can leverage the scale at the edge. In this tutorial, inference requests are sent to the Intel OpenVINO™ DL Streamer – Edge AI Extension, an Edge module that has been designed to work with Azure Video Analyzer edge module.
 
 ## Building the Docker container
 
