@@ -25,7 +25,7 @@ Tiny YOLOv3:
 
 > <span> [!TIP] </span>  
 > If you do not wish to build the local Dockerfile, you may pull it off of Microsoft Container Registry and skip the following step <br>
-> `docker run --name my_yolo_container -p 8080:80 -d  -i mcr.microsoft.com/ava-utilities/avaextension:http-yolov3-tiny-onnx-v1.0`
+> `docker run --name my_yolo_container -p 8080:80 -d  -i mcr.microsoft.com/lva-utilities/avaextension:http-yolov3-tiny-onnx-v1.0`
 
 ## Running and testing
 > <span style="color:red; font-weight: bold"> [!IMPORTANT] </span>  
@@ -151,7 +151,7 @@ Terminate the container using the following Docker commands
 
 ## Upload Docker image to Azure container registry
 
-Follow instruction on the `/utilities/video-analysis/readme.md`, in the section [Instructions on pushing the container image to Azure Container Registry](../readme.md#instructions-on-pushing-the-container-image-to-azure-container-registry).
+Follow instructions in [Push and Pull Docker images - Azure Container Registry](http://docs.microsoft.com/azure/container-registry/container-registry-get-started-docker-cli) to save your image for later use on another machine.
 
 ## Deploy as an Azure IoT Edge module
 
