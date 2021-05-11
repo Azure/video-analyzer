@@ -4,7 +4,7 @@ Pipeline Topologies lets you define where media should be captured from, how it 
 
 <br>
 <p align="center">
-  <img src="./images/pipeline.png" title="pipeline topology"/>
+  <img src="./pipeline.png" title="pipeline topology"/>
 </p>
 <br>
 
