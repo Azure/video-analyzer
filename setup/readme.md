@@ -1,11 +1,11 @@
-# Setting up Azure resources for Live Video Analytics on IoT Edge
+# Setting up Azure resources for Azure Video Analyzer
 
-This folder contains a bash script and other files listed below, which can be used to create and setup Azure resources required to run the quickstarts and other samples for Live Video Analytics on IoT Edge.
+This folder contains a bash script and other files listed below, which can be used to create and setup Azure resources required to run the quickstarts and other samples for Azure Video Analyzer.
 
 - [setup.sh]() is bash script intended to be use in [Azure Cloud Shell](http://shell.azure.com/). This script makes use of the other files in the folder.
 - [cloud-init.yml]() helps setup an Azure Linux VM as an IoT Edge device, and copies some required files into the VM. You can learn about the syntax [here](https://docs.microsoft.com/azure/virtual-machines/linux/using-cloud-init).
 - [deploy.json]() is an [Azure Resource Management template](https://docs.microsoft.com/azure/templates/) for deploying various resources in Azure required by the samples
-- [deployment.template.json]() is a template the script uses to generate a [deployment manifest](https://docs.microsoft.com/azure/iot-edge/module-composition), which can be used for deploying Live Video Analytics on IoT Edge module (and others)
+- [deployment.template.json]() is a template the script uses to generate a [deployment manifest](https://docs.microsoft.com/azure/iot-edge/module-composition), which can be used for deploying Azure Video Analyzer module (and others)
 
 
 You can get to the script via this redirect: <https://aka.ms/ava-edge/setup-resources-for-samples>
@@ -23,9 +23,10 @@ You can get to the script via this redirect: <https://aka.ms/ava-edge/setup-reso
     
 After the script finishes, you will have certain Azure resources deployed in the Azure subscription, including:
 
-* IoT Hub
+* Video Analyzer account
 * Storage account
-* Azure Media Services account
+* Managed Identity
+* IoT Hub
 * Linux VM in Azure, with [IoT Edge runtime](https://docs.microsoft.com/azure/iot-edge/how-to-install-iot-edge-linux) installed
 
 
