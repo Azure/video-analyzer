@@ -8,7 +8,7 @@ Before running the container image, the host device must have the USB camera ins
 If there exist more than one USB camera installed on the host device, these devices will be named as **/dev/video0**, **/dev/video1**, etc.  
 
 ## Building the Container Image
-Run the following command in the solution folder, **... live-video-analytics/utilities/usb-to-rtsp**.
+Run the following command in the solution folder, **... video-analyzer/edge-modules/sources/usb-to-rtsp**.
 
 ```bash
 sudo docker build . -t usb-to-rtsp:v1
