@@ -3,7 +3,7 @@ FROM python:3.8-slim
 ARG WD=/usb-to-rtsp
 WORKDIR $WD
 
-WORKDIR /lvaextension
+WORKDIR /avaextension
 
 RUN pip install -U pip
 
