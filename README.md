@@ -3,7 +3,7 @@
 
 ## Introduction
 
-[Azure Video Analyzer](https://azure.microsoft.com/en-us/services/media-services/live-video-analytics/) (AVA) is a new capability of Azure Media Services. AVA provides a platform for you to build intelligent video applications that span the edge and the cloud. The platform offers the capability to capture, record, analyze live video and publish the results (video and/or video analytics) to Azure services (in the cloud and/or the edge). The platform can be used to enhance IoT solutions with video analytics.
+[Azure Video Analyzer](https://azure.microsoft.com/en-us/services/azure/azure-video-analyzer/) (AVA) is a new capability of Azure Media Services. AVA provides a platform for you to build intelligent video applications that span the edge and the cloud. The platform offers the capability to capture, record, analyze live video and publish the results (video and/or video analytics) to Azure services (in the cloud and/or the edge). The platform can be used to enhance IoT solutions with video analytics.
 
 ## Azure Video Analyzer on IoT Edge
 
