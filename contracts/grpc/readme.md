@@ -6,5 +6,5 @@ This folder has Azure Video Analyzer edge related connection contracts
 
 | File/folder          | Description                                    |
 |----------------------|------------------------------------------------|
-| `grpc `              | gRPC related non-compiled raw proto files      |
+| `grpc`              | gRPC related non-compiled raw proto files      |
 

@@ -1,6 +1,6 @@
 # Contracts
 
-This folder contains information about data contracts related to Azure Video Analyzer on IoT Edge.
+This folder contains information about data contracts related to Azure Video Analyzer edge module.
 
 ## Contents
 
