@@ -115,7 +115,7 @@
       {
         "@type": "#Microsoft.VideoAnalyzer.VideoSink",
         "name": "videoSink",
-        "videoName": "linedoor-2",
+        "videoName": "personlinecrossing",
         "inputs": [
           {
             "nodeName": "rtspSource"
@@ -125,7 +125,7 @@
           }
         ],
         "videoCreationProperties": {
-          "title": "linedoor-2",
+          "title": "personlinecrossing",
           "description": "Sample video using SA custom operation",
           "segmentLength": "PT30S"
         },

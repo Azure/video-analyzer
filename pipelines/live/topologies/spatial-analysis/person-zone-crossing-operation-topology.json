@@ -117,7 +117,7 @@
       {
         "@type": "#Microsoft.VideoAnalyzer.VideoSink",
         "name": "videoSink",
-        "videoName": "stairway-04212021",
+        "videoName": "personzonecrossing",
         "inputs": [
           {
             "nodeName": "rtspSource"
@@ -127,7 +127,7 @@
           }
         ],
         "videoCreationProperties": {
-          "title": "stairway-04212021",
+          "title": "personzonecrossing",
           "description": "Sample video using SA custom operation",
           "segmentLength": "PT30S"
         },

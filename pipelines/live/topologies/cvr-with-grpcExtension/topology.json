@@ -2,7 +2,7 @@
   "@apiVersion": "1.0",
   "name": "CVRWithGrpcExtension",
   "properties": {
-    "description": "Continuous video recording and inferencing using gRPC Graph Extension",
+    "description": "Continuous video recording and inferencing using gRPC Extension",
     "parameters": [
       {
         "name": "rtspUserName",

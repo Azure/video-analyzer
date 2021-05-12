@@ -102,7 +102,7 @@
       {
         "@type": "#Microsoft.VideoAnalyzer.VideoSink",
         "name": "videoSink",
-        "videoName": "customoperation-04152021",
+        "videoName": "customoperation",
         "inputs": [
           {
             "nodeName": "rtspSource"
@@ -112,7 +112,7 @@
           }
         ],
         "videoCreationProperties": {
-          "title": "customoperation-04152021",
+          "title": "customoperation",
           "description": "Sample video using SA custom operation",
           "segmentLength": "PT30S"
         },

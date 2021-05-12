@@ -119,7 +119,7 @@
       {
         "@type": "#Microsoft.VideoAnalyzer.VideoSink",
         "name": "videoSink",
-        "videoName": "persondistance-04152021",
+        "videoName": "persondistance",
         "inputs": [
           {
             "nodeName": "rtspSource"
@@ -129,7 +129,7 @@
           }
         ],
         "videoCreationProperties": {
-          "title": "persondistance-04152021",
+          "title": "persondistance",
           "description": "Sample video using SA custom operation",
           "segmentLength": "PT30S"
         },

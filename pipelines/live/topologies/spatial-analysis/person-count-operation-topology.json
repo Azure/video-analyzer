@@ -117,7 +117,7 @@
       {
         "@type": "#Microsoft.VideoAnalyzer.VideoSink",
         "name": "videoSink",
-        "videoName": "personcount-04152021",
+        "videoName": "personcount",
         "inputs": [
           {
             "nodeName": "rtspSource"
@@ -127,7 +127,7 @@
           }
         ],
         "videoCreationProperties": {
-          "title": "personcount-04152021",
+          "title": "personcount",
           "description": "Sample video using SA custom operation",
           "segmentLength": "PT30S"
         },
