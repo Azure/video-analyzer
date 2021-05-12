@@ -131,7 +131,7 @@
             ]
           }
         ],
-        "fileNamePattern": "sampleFilesFromEVR-${fileSinkOutputName}-${System.DateTime}",
+        "fileNamePattern": "sampleFilesFromEVR-${fileSinkOutputName}",
         "maximumSizeMiB": "512",
         "baseDirectoryPath": "/var/media"
       }
