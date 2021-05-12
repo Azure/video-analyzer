@@ -16,4 +16,4 @@ A pipeline topology can have one or more of the following types of nodes:
 
 Azure Video Analyzer on IoT Edge enables you to manage pipelines via two entities – “Pipeline Topology” and “Live Pipeline”. A pipeline enables you to define a blueprint of the pipeline topologies with parameters as placeholders for values. This pipeline defines what nodes are used in the pipeline topology, and how they are connected within it. A live pipeline enables you to provide values for parameters in a pipeline topology. The live pipeline can then be activated to enable the flow of data.
 
-You can learn more about this in the [pipeline topologies](https://docs.microsoft.com/azure/media-services/live-video-analytics-edge/media-graph-concept) concept page.
+You can learn more about this in the [pipeline topologies](https://docs.microsoft.com/azure/azure-video-analyzer/video-analyzer-docs/pipeline) concept page.
