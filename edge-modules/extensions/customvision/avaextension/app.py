@@ -36,10 +36,10 @@ def scoreRRS():
 
             respBody = json.dumps(respBody)
             
-            logging.info("[LVAX] Sending response.")
+            logging.info("[AVAX] Sending response.")
             return Response(respBody, status= 200, mimetype ='application/json')
         else:
-            logging.info("[LVAX] Sending empty response.")
+            logging.info("[AVAX] Sending empty response.")
             return Response(status= 204)
 
     except:
