@@ -132,7 +132,7 @@
         {
           "@type": "#Microsoft.VideoAnalyzer.VideoSink",
           "name": "videoSink",
-          "videoName": "sample-http-extension",
+          "videoName": "Russell-CvrDetection-001",
           "inputs": [
             {
               "nodeName": "rtspSource",
