@@ -1,4 +1,5 @@
 {
+  "$schema-template": "2.0.0",
   "modulesContent": {
     "$edgeAgent": {
       "properties.desired": {
@@ -8,7 +9,8 @@
           "settings": {
             "minDockerVersion": "v1.25",
             "loggingOptions": "",
-            "registryCredentials": {}
+            "registryCredentials": {
+            }
           }
         },
         "systemModules": {
@@ -25,19 +27,32 @@
             "restartPolicy": "always",
             "settings": {
               "image": "mcr.microsoft.com/azureiotedge-hub:1.1",
-              "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"5671/tcp\":[{\"HostPort\":\"5671\"}],\"8883/tcp\":[{\"HostPort\":\"8883\"}],\"443/tcp\":[{\"HostPort\":\"443\"}]}}}"
+              "createOptions": "{ \"HostConfig\": { \"PortBindings\": { \"5671/tcp\": [ { \"HostPort\": \"5671\" } ], \"8883/tcp\": [ { \"HostPort\": \"8883\" } ], \"443/tcp\": [ { \"HostPort\": \"443\" } ] } } }"
+            },
+            "env": {
+              "UpstreamProtocol": {
+                "value": "AMQPWS"
+              }
             }
           }
         },
         "modules": {
           "avaedge": {
-            "version": "1.0",
+            "version": "1.1",
             "type": "docker",
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "mcr.microsoft.com/media/live-video-analytics:2",
-              "createOptions" : "{\"HostConfig\":{\"LogConfig\":{\"Type\":\"\",\"Config\":{\"max-size\":\"10m\",\"max-file\":\"10\"}},\"Binds\":[\"$VIDEO_OUTPUT_FOLDER_ON_DEVICE:/var/media/\",\"$APPDATA_FOLDER_ON_DEVICE:/var/lib/videoanalyzer/\"]}}"
+              "image": "mcr.microsoft.com/media/video-analyzer:1",
+              "createOptions": "{ \"HostConfig\": { \"LogConfig\": { \"Type\": \"\", \"Config\": { \"max-size\": \"10m\", \"max-file\": \"10\" } }, \"Binds\": [ \"$VIDEO_OUTPUT_FOLDER_ON_DEVICE:/var/media/\", \"$APPDATA_FOLDER_ON_DEVICE:/var/lib/videoanalyzer\" ], \"IpcMode\": \"host\", \"ShmSize\": 1536870912 } }"
+            },
+            "env": {
+              "LOCAL_USER_ID": {
+                "value": "1010"
+              },
+              "LOCAL_GROUP_ID": {
+                "value": "1010"
+              }
             }
           },
           "rtspsim": {
@@ -47,36 +62,33 @@
             "restartPolicy": "always",
             "settings": {
               "image": "mcr.microsoft.com/lva-utilities/rtspsim-live555:1.2",
-              "createOptions": "{\"HostConfig\":{\"PortBindings\": {\"554/tcp\": [{\"HostPort\": \"554\"}]},\"Binds\":[\"$VIDEO_INPUT_FOLDER_ON_DEVICE:/live/mediaServer/media\"]}}"
-              }
+              "createOptions": "{ \"HostConfig\": { \"Binds\": [ \"$VIDEO_INPUT_FOLDER_ON_DEVICE:/live/mediaServer/media\" ] } }"
             }
           }
         }
+      }
     },
     "$edgeHub": {
       "properties.desired": {
         "schemaVersion": "1.0",
         "routes": {
-
           "AVAToHub": "FROM /messages/modules/avaedge/outputs/* INTO $upstream"
-
         },
         "storeAndForwardConfiguration": {
           "timeToLiveSecs": 7200
         }
       }
     },
-
     "avaedge": {
       "properties.desired": {
+        "applicationDataDirectory": "/var/lib/videoanalyzer",
         "ProvisioningToken": "$AVA_PROVISIONING_TOKEN",
-        "ApplicationDataDirectory": "/var/lib/videoanalyzer",
-        "DiagnosticsEventsOutputName": "diagnostics",
-        "OperationalEventsOutputName": "operational",
-        "LogLevel": "Verbose",
-        "LogCategories": "Application,Events,MediaPipeline",
-        "AllowUnsecuredEndpoints": true,
-        "TelemetryOptOut": false
+        "diagnosticsEventsOutputName": "diagnostics",
+        "operationalEventsOutputName": "operational",
+        "logLevel": "information",
+        "LogCategories": "Application,Events",
+        "allowUnsecuredEndpoints": true,
+        "telemetryOptOut": false
       }
     }
   }
