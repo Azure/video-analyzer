@@ -36,16 +36,16 @@ sed -i "s@\$VIDEO_OUTPUT_FOLDER_ON_DEVICE@${VIDEO_OUTPUT_FOLDER_ON_DEVICE}@g" de
 sed -i "s@\$VIDEO_INPUT_FOLDER_ON_DEVICE@${VIDEO_INPUT_FOLDER_ON_DEVICE}@g" deployment.json
 sed -i "s@\$APPDATA_FOLDER_ON_DEVICE@${APPDATA_FOLDER_ON_DEVICE}@g" deployment.json
 
-# Add a file to build env file from
->env
-echo "SUBSCRIPTION_ID=$SUBSCRIPTION_ID" >> env
-echo "RESOUCE_GROUP=$RESOURCE_GROUP" >> env
-echo "AVA_PROVISIONING_TOKEN=$PROVISIONING_TOKEN">> env
-echo "VIDEO_INPUT_FOLDER_ON_DEVICE=$VIDEO_INPUT_FOLDER_ON_DEVICE">> env
-echo "VIDEO_OUTPUT_FOLDER_ON_DEVICE=$VIDEO_OUTPUT_FOLDER_ON_DEVICE" >> env
-echo "APPDATA_FOLDER_ON_DEVICE=$APPDATA_FOLDER_ON_DEVICE" >> env
-echo "CONTAINER_REGISTRY_PASSWORD_myacr=$REGISTRY_PASSWORD" >> env
-echo "CONTAINER_REGISTRY_USERNAME_myacr=$REGISTRY_USER_NAME" >> env
+# Add a file to build env.txt file from
+>env.txt
+echo "SUBSCRIPTION_ID=$SUBSCRIPTION_ID" >> env.txt
+echo "RESOUCE_GROUP=$RESOURCE_GROUP" >> env.txt
+echo "AVA_PROVISIONING_TOKEN=$PROVISIONING_TOKEN">> env.txt
+echo "VIDEO_INPUT_FOLDER_ON_DEVICE=$VIDEO_INPUT_FOLDER_ON_DEVICE">> env.txt
+echo "VIDEO_OUTPUT_FOLDER_ON_DEVICE=$VIDEO_OUTPUT_FOLDER_ON_DEVICE" >> env.txt
+echo "APPDATA_FOLDER_ON_DEVICE=$APPDATA_FOLDER_ON_DEVICE" >> env.txt
+echo "CONTAINER_REGISTRY_PASSWORD_myacr=$REGISTRY_PASSWORD" >> env.txt
+echo "CONTAINER_REGISTRY_USERNAME_myacr=$REGISTRY_USER_NAME" >> env.txt
 >appsettings.json
 echo "{" >> appsettings.json
 echo "\"IoThubConnectionString\": \"$IOT_HUB_CONNECTION_STRING\"," >> appsettings.json
@@ -62,5 +62,5 @@ az iot edge set-modules --device-id $DEVICE_ID --hub-name $HUB_NAME --content de
 printf "storing manifest for reference\n"
 az storage share create --name deployment-output --account-name $AZURE_STORAGE_ACCOUNT
 az storage file upload --share-name deployment-output --source deployment.json --account-name $AZURE_STORAGE_ACCOUNT
-az storage file upload --share-name deployment-output --source env --account-name $AZURE_STORAGE_ACCOUNT
+az storage file upload --share-name deployment-output --source env.txt --account-name $AZURE_STORAGE_ACCOUNT
 az storage file upload --share-name deployment-output --source appsettings.json --account-name $AZURE_STORAGE_ACCOUNT
