@@ -149,7 +149,7 @@
             }
           ],
           "videoCreationProperties": {
-            "title": "sample-http-extension",
+            "title": "Russell-CvrDetection-001",
             "description": "Sample video using HTTP extension",
             "segmentLength": "PT30S"
           },
