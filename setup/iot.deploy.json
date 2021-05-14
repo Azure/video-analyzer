@@ -1,0 +1,69 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "namePrefix": {
+            "metadata": {
+                "description": "Used to qualify the names of all of the resources created in this template."
+            },
+            "defaultValue": "avasample",
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 13
+        },
+        "hubName": {
+            "metadata": {
+                "description": "An (optional) existing IoT Hub to use instead of creating one."
+            },
+            "defaultValue": "",
+            "type": "string"
+        },
+        "hubResourceGroup": {
+            "metadata": {
+                "description": "An (optional) resource group name if using an existing IoT Hub."
+            },
+            "defaultValue": "",
+            "type": "string"
+        },
+        "resourceTags": {
+            "type": "object",
+            "defaultValue": {
+                "sample": "azure-video-analyzer"
+            }
+        }
+    },
+    "variables": {
+        "newHubName": "[concat(parameters('namePrefix'),uniqueString(resourceGroup().id))]",
+        "hubName": "[if(empty(parameters('hubName')),variables('newHubName'),parameters('hubName'))]",
+        "hubApiVersion": "2019-11-04",
+        "hubResourceGroup": "[if(empty(parameters('hubResourceGroup')),resourceGroup().name,parameters('hubResourceGroup'))]",
+        "hubResourceId": "[resourceId(variables('hubResourceGroup'),'Microsoft.Devices/IotHubs',variables('hubName'))]"
+    },
+    "resources": [
+        {
+            "condition": "[empty(parameters('hubName'))]",
+            "type": "Microsoft.Devices/IotHubs",
+            "comments": "Video Analyzer is hosted on an IoT Edge device. The host device is managed through an IoT Hub. The keys for accessing the hub are in the template's output.",
+            "apiVersion": "[variables('hubApiVersion')]",
+            "name": "[variables('hubName')]",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "name": "S1",
+                "capacity": 1
+            },
+            "properties": {
+            },
+            "tags": "[parameters('resourceTags')]"
+        }
+    ],
+    "outputs": {
+        "hubName": {
+            "type": "string",
+            "value": "[variables('hubName')]"
+        },
+        "connectionString": {
+            "type": "string",
+            "value": "[concat('HostName=', reference(variables('hubResourceId'), variables('hubApiVersion')).hostName, ';SharedAccessKeyName=iothubowner;SharedAccessKey=', listKeys(variables('hubResourceId'), variables('hubApiVersion')).value[0].primaryKey)]"
+        }
+    }
+}
