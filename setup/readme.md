@@ -36,7 +36,4 @@ After the script finishes you will have the following Azure resources:
 
 
 
-## Reference
 
-- [portal](https://ms.portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/SandboxBlade)
-- [docs](https://docs.microsoft.com/en-us/azure/azure-resource-manager/managed-applications/create-uidefinition-elements) 
