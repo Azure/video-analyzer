@@ -132,7 +132,7 @@
         {
           "@type": "#Microsoft.VideoAnalyzer.VideoSink",
           "name": "videoSink",
-          "videoName": "sample-http-extension",
+          "videoName": "russell-cvrDetection",
           "inputs": [
             {
               "nodeName": "rtspSource",
@@ -149,7 +149,7 @@
             }
           ],
           "videoCreationProperties": {
-            "title": "Russell-CvrDetection-001",
+            "title": "russell-cvrDetection",
             "description": "Sample video using HTTP extension",
             "segmentLength": "PT30S"
           },
