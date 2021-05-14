@@ -1,0 +1,69 @@
+{
+  "@apiVersion": "1.0",
+  "name": "AudioVideo",
+  "properties": {
+    "description": "Record video clip including audio",
+    "parameters": [
+      {
+        "name": "rtspUserName",
+        "type": "String",
+        "description": "rtsp source user name.",
+        "default": "dummyUserName"
+      },
+      {
+        "name": "rtspPassword",
+        "type": "String",
+        "description": "rtsp source password.",
+        "default": "dummyPassword"
+      },
+      {
+        "name": "rtspUrl",
+        "type": "String",
+        "description": "rtsp Url"
+      }
+    ],
+    "sources": [
+      {
+        "@type": "#Microsoft.VideoAnalyzer.RtspSource",
+        "transport": "Tcp",
+        "endpoint": {
+          "@type": "#Microsoft.VideoAnalyzer.UnsecuredEndpoint",
+          "credentials": {
+            "@type": "#Microsoft.VideoAnalyzer.UsernamePasswordCredentials",
+            "username": "${rtspUserName}",
+            "password": "${rtspPassword}"
+          },
+          "url": "${rtspUrl}"
+        },
+        "name": "rtspSource"
+      }
+    ],
+    "processors": [],
+    "sinks": [
+      {
+        "@type": "#Microsoft.VideoAnalyzer.VideoSink",
+        "name": "videoSink",
+        "videoName": "sample-audio-video",
+        "inputs": [
+          {
+            "nodeName": "rtspSource",
+            "outputSelectors": [
+              {
+                "property": "mediaType",
+                "operator": "isNot",
+                "value": "application"
+              }
+            ]
+          }
+        ],
+        "videoCreationProperties": {
+          "title": "sample-audio-video",
+          "description": "Sample video using audio video",
+          "segmentLength": "PT30S"
+        },
+        "localMediaCachePath": "/var/lib/videoanalyzer/tmp/",
+        "localMediaCacheMaximumSizeMiB": "2048"
+      }
+    ]
+  }
+}
