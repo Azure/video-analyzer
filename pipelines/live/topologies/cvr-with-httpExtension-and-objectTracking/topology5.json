@@ -44,12 +44,6 @@
           "type": "String",
           "description": "hub sink output name",
           "default": "inferenceOutput"
-        },
-        {
-          "name": "videoSinkName",
-          "type": "String",
-          "description": "video sink name",
-          "default": "sampleVideoSinkFromCVR-AVAEdge"
         }
       ],
       "sources": [
