@@ -126,7 +126,7 @@
         {
           "@type": "#Microsoft.VideoAnalyzer.VideoSink",
           "name": "videoSink",
-          "videoName": "sample-cvr-inferencing",
+          "videoName": "sample-cvr-with-inference-metadata",
           "inputs": [
             {
               "nodeName": "rtspSource",
@@ -143,8 +143,8 @@
             }
           ],
           "videoCreationProperties": {
-            "title": "sample-cvr-inferencing",
-            "description": "Sample video using HTTP extension",
+            "title": "sample-cvr-with-inference-metadata",
+            "description": "Sample video recording where inferencing metadata from a HTTP extension is recorded along with media",
             "segmentLength": "PT30S"
           },
           "localMediaCachePath": "/var/lib/videoanalyzer/tmp/",
