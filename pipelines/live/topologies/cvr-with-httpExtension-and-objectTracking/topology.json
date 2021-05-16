@@ -144,7 +144,7 @@
           ],
           "videoCreationProperties": {
             "title": "sample-cvr-with-inference-metadata",
-            "description": "Sample video recording where inferencing metadata from a HTTP extension is recorded along with media",
+            "description": "Sample video recording where inferencing metadata (generated via a HTTP extension and object tracking) is recorded along with media",
             "segmentLength": "PT30S"
           },
           "localMediaCachePath": "/var/lib/videoanalyzer/tmp/",
