@@ -1,6 +1,6 @@
 # Video sources to be used with Azure Video Analyzer
 
-This folder contains a set of docker containers that can be used in conjunction with Azure Video Analyzer
+This folder contains a set of docker containers that can simulate a live video source for use with Azure Video Analyzer
 
 ## Contents
 
