@@ -37,11 +37,11 @@ The widgets are distributed as an NPM package. There are a couple ways to instal
     </html>
     ```
 
--   **Javascript window object** - If you want expose the widget code on the window, you can import the latest version by using this script segment.
+-   **Window object** - If you want expose the widget code on the window, you can import the latest version by using this script segment.
     ```html
             ...
             <!-- Add Video Analyzer player web component -->
-            <script async type="module" src="https://unpkg.com/@azure/video-analyzer-widgets@latest/dist/global.min.js"></script>
+            <script async src="https://unpkg.com/@azure/video-analyzer-widgets@latest/dist/global.min.js"></script>
         </body>
     </html>
     ```
@@ -64,9 +64,9 @@ Player widget is a web-component that can be created in your base HTML code, or 
     	<ava-player width="920px"><ava-player>
       </body>
     ```
--   Creating dynamically with Javascript
+-   Creating dynamically using window
     ```typescript
-    const avaPlayer = new Player();
+    const avaPlayer = new window.ava.widgets.player();
     document.firstElementChild.appendChild(avaPlayer);
     ```
 -   Creating dynamically with Typescript
@@ -146,7 +146,7 @@ This code shows how to create a widget dynamically with Javascript code without 
         const widgetContainer = document.querySelector('#widget-container');
 
         // Create new player widget
-        const playerWidget = new Player({
+        const playerWidget = new window.ava.widgets.player({
             token: '<AVA-API-JWT-TOKEN>',
             clientApiEndpointUrl: '<CLIENT-ENDPOINT-URL>',
             videoName: '<VIDEO-NAME-FROM-AVA-ACCOUNT>'
@@ -158,7 +158,7 @@ This code shows how to create a widget dynamically with Javascript code without 
         playerWidget.load();
     }
 </script>
-<script async type="module" src="https://unpkg.com/@azure/video-analyzer-widgets" onload="onAVALoad()"></script>
+<script async src="https://unpkg.com/@azure/video-analyzer-widgets@latest/dist/global.min.js" onload="onAVALoad()"></script>
 <body>
     <div id="widget-container"></div>
 </body>
