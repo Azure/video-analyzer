@@ -44,24 +44,6 @@
         "type": "String",
         "description": "Hub sink output name",
         "default": "iothubsinkoutput"
-      },
-      {
-        "name": "imageScaleMode",
-        "type": "String",
-        "description": "image scaling mode",
-        "default": "pad"
-      },
-      {
-        "name": "frameWidth",
-        "type": "String",
-        "description": "Width of the image frame to be sent to the gRPC Server.",
-        "default": "416"
-      },
-      {
-        "name": "frameHeight",
-        "type": "String",
-        "description": "Height of the image frame to be sent to the gRPC Server.",
-        "default": "416"
       }
     ],
     "sources": [
@@ -94,14 +76,9 @@
         },
         "dataTransfer": {
           "mode": "sharedMemory",
-          "SharedMemorySizeMiB": "75"
+          "SharedMemorySizeMiB": "64"
         },
         "image": {
-          "scale": {
-            "mode": "${imageScaleMode}",
-            "width": "${frameWidth}",
-            "height": "${frameHeight}"
-          },
           "format": {
             "@type": "#Microsoft.VideoAnalyzer.ImageFormatRaw",
             "pixelFormat": "bgr24"
