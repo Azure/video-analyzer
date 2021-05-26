@@ -370,7 +370,7 @@
                     "resources": [
                         {
                             "type": "Microsoft.Resources/deploymentScripts",
-                            "apiVersion": "2019-10-01-preview",
+                            "apiVersion": "2020-10-01",
                             "name": "execute-iot-edge-setup.sh",
                             "location": "[resourceGroup().location]",
                             "kind": "AzureCLI",
