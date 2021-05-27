@@ -119,7 +119,7 @@
           "hubOutputName": "${hubSinkOutputName}",
           "inputs": [
             {
-              "nodeName": "httpExtension"
+              "nodeName": "objectTracker"
             }
           ]
         },
