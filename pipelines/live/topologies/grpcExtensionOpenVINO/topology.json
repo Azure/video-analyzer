@@ -40,6 +40,12 @@
         "default": "dummyPassword"
       },
       {
+        "name": "extensionConfiguration",
+        "type": "String",
+        "description": "Optional extension configuration for the gRPC server",
+        "default": "{}"
+      },
+      {
         "name": "hubSinkOutputName",
         "type": "String",
         "description": "Hub sink output name",
@@ -74,9 +80,10 @@
             "password": "${grpcExtensionPassword}"
           }
         },
-        "dataTransfer": {
-          "mode": "sharedMemory",
-          "SharedMemorySizeMiB": "64"
+        "extensionConfiguration": "${extensionConfiguration}",
+          "dataTransfer": {
+              "mode": "sharedMemory",
+              "SharedMemorySizeMiB": "64"
         },
         "image": {
           "format": {
