@@ -39,6 +39,8 @@ sudo mkdir -p /var/lib/videoanalyzer
 sudo chown -R localedgeuser:localedgegroup /var/lib/videoanalyzer/
 sudo mkdir -p /var/lib/videoanalyzer/tmp/ 
 sudo chown -R localedgeuser:localedgegroup /var/lib/videoanalyzer/tmp/
+sudo mkdir -p /var/local/videoanalyzer/logs
+sudo chown -R localedgeuser:localedgegroup /var/local/videoanalyzer/logs
 
 # output folder for file sink
 sudo mkdir -p /var/media
