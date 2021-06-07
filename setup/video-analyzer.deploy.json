@@ -71,10 +71,8 @@
                     "variables": {
                         "storageAccountName": "[concat(parameters('namePrefix'),uniqueString(resourceGroup().id))]",
                         "managedIdentityName": "[parameters('managedIdentityName')]",
-                        "storageBlobDataContributorAssignment": "[guid('Storage Blob Data Contributor',variables('managedIdentityName'))]",
-                        "storageBlobDataContributorDefinitionId": "[concat(resourceGroup().id, '/providers/Microsoft.Authorization/roleDefinitions/', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe')]",
-                        "readerAssignment": "[guid('Reader',variables('managedIdentityName'))]",
-                        "readerDefinitionId": "[concat(resourceGroup().id, '/providers/Microsoft.Authorization/roleDefinitions/', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')]"   
+                        "roleAssignmentName": "[guid('Storage Blob Data Contributor',variables('managedIdentityName'))]",
+                        "roleDefinitionId": "[concat(resourceGroup().id, '/providers/Microsoft.Authorization/roleDefinitions/', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe')]"
                     },
                     "resources": [
                         {
@@ -97,7 +95,7 @@
                             }
                         },
                         {
-                            "name": "[concat(variables('storageAccountName'), '/Microsoft.Authorization/', variables('storageBlobDataContributorAssignment'))]",
+                            "name": "[concat(variables('storageAccountName'), '/Microsoft.Authorization/', variables('roleAssignmentName'))]",
                             "type": "Microsoft.Storage/storageAccounts/providers/roleAssignments",
                             "apiVersion": "2021-04-01-preview",
                             "dependsOn": [
@@ -105,25 +103,28 @@
                                 "[variables('storageAccountName')]"
                             ],
                             "properties": {
-                                "roleDefinitionId": "[variables('storageBlobDataContributorDefinitionId')]",
+                                "roleDefinitionId": "[variables('roleDefinitionId')]",
                                 "principalId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities',variables('managedIdentityName')), '2018-11-30').principalId]",
                                 "principalType": "ServicePrincipal"
                             }
                         },
                         {
-                            "name": "[concat(variables('storageAccountName'), '/Microsoft.Authorization/', variables('readerAssignment'))]",
-                            "type": "Microsoft.Storage/storageAccounts/providers/roleAssignments",
-                            "apiVersion": "2021-04-01-preview",
-                            "dependsOn": [
-                                "[variables('managedIdentityName')]",
-                                "[variables('storageAccountName')]"
-                            ],
+                            "type": "Microsoft.Resources/deploymentScripts",
+                            "dependsOn": [ "[concat(variables('storageAccountName'), '/Microsoft.Authorization/', variables('roleAssignmentName'))]" ],
+                            "apiVersion": "2020-10-01",
+                            "name": "managed-identity-role-assignmentComplete",
+                            "location": "[resourceGroup().location]",
+                            "kind": "AzurePowerShell",
                             "properties": {
-                                "roleDefinitionId": "[variables('readerDefinitionId')]",
-                                "principalId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities',variables('managedIdentityName')), '2018-11-30').principalId]",
-                                "principalType": "ServicePrincipal"
+                                "azPowerShellVersion": "5.0",
+                                "forceUpdateTag": "1.0",
+                                "scriptContent": "Start-Sleep -s 60",
+                                "timeout": "PT30M",
+                                "cleanupPreference": "Always",
+                                "retentionInterval": "PT1H"
                             }
                         }
+
                     ],
                     "outputs": {}
                 }
@@ -136,7 +137,8 @@
             "name": "[variables('accountName')]",
             "location": "[resourceGroup().location]",
             "dependsOn": [
-                "deploy-storage-and-identity"
+                "deploy-storage-and-identity",
+                "managed-identity-role-assignmentComplete"
             ],
             "properties": {
                 "storageAccounts": [
