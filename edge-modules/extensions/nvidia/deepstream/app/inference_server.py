@@ -1,23 +1,15 @@
-import sys
-
 import logging
 import os
-#import cv2
-
-import numpy as np
-from queue import Queue
-
 import inferencing_pb2
 import media_pb2
 import extension_pb2
 import extension_pb2_grpc
 
+from queue import Queue
 from enum import Enum
-
 from shared_memory import SharedMemoryManager
 from exception_handler import PrintGetExceptionDetails
-
-from gst_lva_pipeline import Gst_Lva_Pipeline
+from gst_pipeline import gst_pipeline
 
 # Get debug flag from env variable (Returns None if not set)
 # Set this environment variables in the IoTEdge Deployment manifest to activate debugging.
@@ -91,7 +83,7 @@ class InferenceServer(extension_pb2_grpc.MediaGraphExtensionServicer):
             raise
 
 
-    def ProcessMediaSample(self, clientState, mediaStreamMessageRequest, gst_lva_pipeline):
+    def ProcessMediaSample(self, clientState, mediaStreamMessageRequest, gst_pipeline):
         retVal = False
 
         try:
@@ -132,7 +124,7 @@ class InferenceServer(extension_pb2_grpc.MediaGraphExtensionServicer):
                             ",height=",
                             str(height)))                                                            
                     
-                    retVal = gst_lva_pipeline.push(rawBytes, 
+                    retVal = gst_pipeline.push(rawBytes, 
                                                     caps,                                                     
                                                     mediaStreamMessageRequest.sequence_number,
                                                     mediaStreamMessageRequest.media_sample.timestamp)                                        
@@ -181,8 +173,8 @@ class InferenceServer(extension_pb2_grpc.MediaGraphExtensionServicer):
         height = clientState._mediaStreamDescriptor.media_descriptor.video_frame_sample_format.dimensions.height
 
         msgQueue = Queue(maxsize=10)
-        gst_lva_pipeline = Gst_Lva_Pipeline(msgQueue, mediaStreamMessageRequest.media_stream_descriptor.graph_identifier.graph_instance_name, width, height)
-        gst_lva_pipeline.play()
+        gst_pipeline = gst_pipeline(msgQueue, mediaStreamMessageRequest.media_stream_descriptor.graph_identifier.graph_instance_name, width, height)
+        gst_pipeline.play()
     
 
         # Process rest of the MediaStream message sequence
@@ -195,7 +187,7 @@ class InferenceServer(extension_pb2_grpc.MediaGraphExtensionServicer):
                 logging.info('[Received] SequenceNum: {0:07d}'.format(requestSeqNum))
 
                 # Get media content bytes. (bytes sent over shared memory buffer, segment or inline to message)                
-                if (not self.ProcessMediaSample(clientState, mediaStreamMessageRequest, gst_lva_pipeline)):
+                if (not self.ProcessMediaSample(clientState, mediaStreamMessageRequest, gst_pipeline)):
                     #logging.info('Error in processing media sample with sequence number ' + str(mediaStreamMessageRequest.sequence_number))     
                     
                     responseSeqNum += 1

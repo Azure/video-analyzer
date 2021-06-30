@@ -5,7 +5,6 @@ gi.require_version('Gst', '1.0')
 from gi.repository import Gst, GObject
 
 import os
-import sys
 import ctypes
 
 class GstLVAMessage(ctypes.Structure):
@@ -18,7 +17,7 @@ class GstLVAMessage(ctypes.Structure):
 GstLVAMessagePtr = ctypes.POINTER(GstLVAMessage)
 
 # Load C-lib
-clib = ctypes.CDLL("build/libgst_lva_message.so", mode = os.RTLD_LAZY)
+clib = ctypes.CDLL("build/libgst_message.so", mode = os.RTLD_LAZY)
 
 # Map ctypes arguments to C-style arguments
 clib.gst_lva_buffer_add_message.argtypes = [ctypes.c_void_p, GstLVAMessagePtr]

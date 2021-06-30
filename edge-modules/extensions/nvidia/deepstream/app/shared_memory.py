@@ -1,4 +1,3 @@
-import tempfile
 import mmap
 import os
 import logging

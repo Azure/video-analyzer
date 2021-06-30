@@ -1,8 +1,6 @@
 import os
-import random
 from random import randint
 import numpy as np
-import time
 import gi
 import io
 from io import BytesIO
@@ -18,11 +16,10 @@ gi.require_version('GstVideo', '1.0')
 
 from gi.repository import GObject, Gst, GstVideo
 
-from gst_lva_message import add_message, remove_message, get_message
+from gst_message import add_message, remove_message, get_message
 from exception_handler import PrintGetExceptionDetails
 import pyds
 import inferencing_pb2
-import media_pb2
 import extension_pb2
 import configparser
 import platform
@@ -61,7 +58,7 @@ def get_num_channels(fmt: GstVideo.VideoFormat) -> int:
 	return -1
 
 
-class Gst_Lva_Pipeline:
+class gst_pipeline:
 	def __init__(self, msgQueue, graphName, width, height):
 		self.msgQueue = msgQueue
 		self.graphName = graphName
@@ -142,11 +139,11 @@ class Gst_Lva_Pipeline:
 
 		self._sink.connect("new-sample", self.on_new_sample)
 
-	def get_lva_MediaStreamMessage(self, buffer, gst_lva_message, ih, iw):
+	def get_lva_MediaStreamMessage(self, buffer, gst_message, ih, iw):
 
 		msg = extension_pb2.MediaStreamMessage()		
-		msg.ack_sequence_number = gst_lva_message.sequence_number
-		msg.media_sample.timestamp = gst_lva_message.timestamp
+		msg.ack_sequence_number = gst_message.sequence_number
+		msg.media_sample.timestamp = gst_message.timestamp
 			
 		# # Retrieve batch metadata from the gst_buffer
 		# # Note that pyds.gst_buffer_get_nvds_batch_meta() expects the
@@ -344,9 +341,9 @@ class Gst_Lva_Pipeline:
 			height = caps.get_structure(0).get_value('height')
 			width = caps.get_structure(0).get_value('width')						
 			
-			gst_lva_message = get_message(buffer)
+			gst_message = get_message(buffer)
 			
-			msg = self.get_lva_MediaStreamMessage(buffer, gst_lva_message, height, width)
+			msg = self.get_lva_MediaStreamMessage(buffer, gst_message, height, width)
 
 			if msg is None:
 				logging.info('media stream message is None')

@@ -1,13 +1,13 @@
 
-#ifndef __GST_LVA_MESSAGE_H__
-#define __GST_LVA_MESSAGE_H__
+#ifndef __GST_MESSAGE_H__
+#define __GST_MESSAGE_H__
  
 #include <gst/gst.h>
 
-#define GST_LVA_MESSAGE_META_TYPE       (gst_lva_message_api_get_type())
-#define GST_LVA_MESSAGE_META_IMPL_NAME   "GstLVAMessageMeta"
-#define GST_LVA_MESSAGE_META_TAG         "gst_lva_message_meta"
-#define GST_LVA_MESSAGE_META_API_NAME    "GstLVAMessageMetaAPI"
+#define GST_MESSAGE_META_TYPE       (gst_message_api_get_type())
+#define GST_MESSAGE_META_IMPL_NAME   "GstLVAMessageMeta"
+#define GST_MESSAGE_META_TAG         "gst_message_meta"
+#define GST_MESSAGE_META_API_NAME    "GstLVAMessageMetaAPI"
 
 
 typedef struct _GstLVAMessageMeta       GstLVAMessageMeta;
@@ -26,9 +26,9 @@ struct _GstLVAMessageMeta {
 
 
 
-GType gst_lva_message_api_get_type(void);
+GType gst_message_api_get_type(void);
 
-const GstMetaInfo *gst_lva_message_meta_get_info(void);
+const GstMetaInfo *gst_message_meta_get_info(void);
  
 GstLVAMessageMeta* gst_lva_buffer_add_message( GstBuffer *buffer, GstLVAMessage *gstlvaMsg);
 
