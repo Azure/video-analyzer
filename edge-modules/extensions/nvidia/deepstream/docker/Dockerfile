@@ -41,20 +41,20 @@ RUN apt-get update -y && \
     apt-get install -y libnginx-mod-nchan
 
 # Copy nginx config file
-COPY ./app/nginx/lva_grpc_app.conf /etc/nginx/sites-available
+COPY ./app/nginx/grpc_app.conf /etc/nginx/sites-available
 
 # Copy flask app
-COPY ./app/nginx/lva_grpc_app.py /app
+COPY ./app/nginx/grpc_app.py /app
 
 # Setup runit file for nginx and gunicorn
 RUN mkdir /var/runit && \
     mkdir /var/runit/nginx && \
     /bin/bash -c "echo -e '"'#!/bin/bash\nexec nginx -g "daemon off;"\n'"' > /var/runit/nginx/run" && \
     chmod +x /var/runit/nginx/run && \
-    ln -s /etc/nginx/sites-available/lva_grpc_app.conf /etc/nginx/sites-enabled/ && \
+    ln -s /etc/nginx/sites-available/grpc_app.conf /etc/nginx/sites-enabled/ && \
     rm -rf /etc/nginx/sites-enabled/default && \
     mkdir /var/runit/gunicorn && \
-    /bin/bash -c "echo -e '"'#!/bin/bash\nexec gunicorn -b 127.0.0.1:8000 --chdir /app lva_grpc_app:app\n'"' > /var/runit/gunicorn/run" && \
+    /bin/bash -c "echo -e '"'#!/bin/bash\nexec gunicorn -b 127.0.0.1:8000 --chdir /app grpc_app:app\n'"' > /var/runit/gunicorn/run" && \
     chmod +x /var/runit/gunicorn/run
 
 EXPOSE 80

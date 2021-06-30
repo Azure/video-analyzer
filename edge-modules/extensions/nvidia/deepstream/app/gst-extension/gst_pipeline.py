@@ -77,7 +77,7 @@ class gst_pipeline:
 
 		classificationFile = os.environ.get('GST_CLASSIFICATION_FILES')
 		
-		pipelineHeader = "appsrc name=lvasource ! videoconvert ! nvvideoconvert nvbuf-memory-type={0} ! capsfilter caps=video/x-raw(memory:NVMM) ! m.sink_0 nvstreammux name=m batch-size=1 width={1} height={2} batched-push-timeout=33000 nvbuf-memory-type={0} ! nvinfer name=primary-inference config-file-path={3} ! ".format(nv_memory_type, width, height, configFile)
+		pipelineHeader = "appsrc name=source ! videoconvert ! nvvideoconvert nvbuf-memory-type={0} ! capsfilter caps=video/x-raw(memory:NVMM) ! m.sink_0 nvstreammux name=m batch-size=1 width={1} height={2} batched-push-timeout=33000 nvbuf-memory-type={0} ! nvinfer name=primary-inference config-file-path={3} ! ".format(nv_memory_type, width, height, configFile)
 		
 		pipelineTracker = ""
 		
@@ -115,7 +115,7 @@ class gst_pipeline:
 			for file in classificationFile.split(','):
 				pipelineClassifiers += " nvinfer config-file-path={} !".format(file)
 
-		pipelineFooter = " nvvideoconvert name=converter nvbuf-memory-type={} ! videoconvert ! video/x-raw,format=RGB ! appsink name=lvasink".format(nv_memory_type)
+		pipelineFooter = " nvvideoconvert name=converter nvbuf-memory-type={} ! videoconvert ! video/x-raw,format=RGB ! appsink name=sink".format(nv_memory_type)
 		
 		pipeline = pipelineHeader + pipelineTracker + pipelineClassifiers + pipelineFooter
 
@@ -126,20 +126,20 @@ class gst_pipeline:
 		
 		self._pipeline = Gst.parse_launch(pipeline)
 
-		self._src = self._pipeline.get_by_name('lvasource')
+		self._src = self._pipeline.get_by_name('source')
 		self._src.connect('need-data', self.start_feed)
 		self._src.connect('enough-data', self.stop_feed)
 
 		self._src.set_property('format', 'time')
 		self._src.set_property('do-timestamp', True)
 
-		self._sink = self._pipeline.get_by_name('lvasink')
+		self._sink = self._pipeline.get_by_name('sink')
 		self._sink.set_property("emit-signals", True)
 		self._sink.set_property("max-buffers", 1)		
 
 		self._sink.connect("new-sample", self.on_new_sample)
 
-	def get_lva_MediaStreamMessage(self, buffer, gst_message, ih, iw):
+	def get_MediaStreamMessage(self, buffer, gst_message, ih, iw):
 
 		msg = extension_pb2.MediaStreamMessage()		
 		msg.ack_sequence_number = gst_message.sequence_number
@@ -343,7 +343,7 @@ class gst_pipeline:
 			
 			gst_message = get_message(buffer)
 			
-			msg = self.get_lva_MediaStreamMessage(buffer, gst_message, height, width)
+			msg = self.get_MediaStreamMessage(buffer, gst_message, height, width)
 
 			if msg is None:
 				logging.info('media stream message is None')
