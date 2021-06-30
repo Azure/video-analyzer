@@ -9,7 +9,7 @@ from queue import Queue
 from enum import Enum
 from shared_memory import SharedMemoryManager
 from exception_handler import PrintGetExceptionDetails
-from gst_pipeline import gst_pipeline
+from gst_ava_pipeline import Gst_Ava_Pipeline
 
 # Get debug flag from env variable (Returns None if not set)
 # Set this environment variables in the IoTEdge Deployment manifest to activate debugging.
@@ -173,7 +173,7 @@ class InferenceServer(extension_pb2_grpc.MediaGraphExtensionServicer):
         height = clientState._mediaStreamDescriptor.media_descriptor.video_frame_sample_format.dimensions.height
 
         msgQueue = Queue(maxsize=10)
-        gst_pipeline = gst_pipeline(msgQueue, mediaStreamMessageRequest.media_stream_descriptor.graph_identifier.graph_instance_name, width, height)
+        gst_pipeline = Gst_Ava_Pipeline(msgQueue, mediaStreamMessageRequest.media_stream_descriptor.graph_identifier.graph_instance_name, width, height)
         gst_pipeline.play()
     
 

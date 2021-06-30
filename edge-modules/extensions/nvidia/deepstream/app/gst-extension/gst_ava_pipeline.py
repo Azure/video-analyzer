@@ -61,7 +61,7 @@ def get_num_channels(fmt: GstVideo.VideoFormat) -> int:
 	return -1
 
 
-class gst_ava_Pipeline:
+class Gst_Ava_Pipeline:
 	def __init__(self, msgQueue, graphName, width, height):
 		self.msgQueue = msgQueue
 		self.graphName = graphName
