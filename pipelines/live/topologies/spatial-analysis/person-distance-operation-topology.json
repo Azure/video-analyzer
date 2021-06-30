@@ -1,6 +1,6 @@
 {
   "@apiVersion": "1.0",
-  "name": "InferencingWithCVExtension",
+  "name": "InferencingWithPersonDistance",
   "properties": {
     "description": "Analyzing Live Video with Computer Vision for Spatial Analysis",
     "parameters": [
