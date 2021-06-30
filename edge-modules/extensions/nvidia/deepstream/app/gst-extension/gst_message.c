@@ -6,15 +6,15 @@
 
 
 
-void gst_message_init(GstLVAMessage *gst_message)
+void gst_message_init(GstMessage *gst_message)
 {
     gst_message->sequence_number = 0;    
     gst_message->timestamp = 0;
 }
 
-GstLVAMessage* gst_message_empty_message()
+GstMessage* gst_message_empty_message()
 {
-    static GstLVAMessage message;
+    static GstMessage message;
     gst_message_init(&message);
     return &message;
 }   
@@ -33,8 +33,8 @@ GType gst_message_api_get_type(void)
 
 static gboolean gst_message_meta_init(GstMeta *meta, gpointer params, GstBuffer *buffer)
 {
-    GstLVAMessageMeta *gst_lva_meta = (GstLVAMessageMeta *)meta;     
-    gst_message_init(&(gst_lva_meta->message));
+    GstMessageMeta *gst_meta = (GstMessageMeta *)meta;     
+    gst_message_init(&(gst_meta->message));
     
     return TRUE;
 }
@@ -48,22 +48,22 @@ static void gst_message_meta_free(GstMeta *meta, GstBuffer *buffer)
 }
 
 // Add message to the buffer
-GstLVAMessageMeta* gst_lva_buffer_add_message( GstBuffer *buffer, GstLVAMessage *gstlvaMsg)
+GstMessageMeta* gst_buffer_add_message( GstBuffer *buffer, GstMessage *gstMsg)
 {   
     const GstMetaInfo *meta_info = gst_message_meta_get_info(); 
-    GstLVAMessageMeta *gstlvameta = (GstLVAMessageMeta *)gst_buffer_add_meta(buffer, meta_info, NULL);   
+    GstMessageMeta *gstmeta = (GstMessageMeta *)gst_buffer_add_meta(buffer, meta_info, NULL);   
 
-    gstlvameta->message.sequence_number = gstlvaMsg->sequence_number;     
-    gstlvameta->message.timestamp = gstlvaMsg->timestamp;
+    gstmeta->message.sequence_number = gstMsg->sequence_number;     
+    gstmeta->message.timestamp = gstMsg->timestamp;
 
-    return gstlvameta;
+    return gstmeta;
 }
 
 static gboolean gst_message_meta_transform(GstBuffer *dest_buf, GstMeta *src_meta, GstBuffer *src_buf, GQuark type, gpointer data)
 {
     
-    GstLVAMessageMeta *gst_lva_srcmeta = (GstLVAMessageMeta *)src_meta;
-    GstLVAMessageMeta *gst_lva_destmeta = gst_lva_buffer_add_message(dest_buf, &(gst_lva_srcmeta->message));
+    GstMessageMeta *gst_srcmeta = (GstMessageMeta *)src_meta;
+    GstMessageMeta *gst_destmeta = gst_buffer_add_message(dest_buf, &(gst_srcmeta->message));
     
     return TRUE;
 }
@@ -76,7 +76,7 @@ const GstMetaInfo *gst_message_meta_get_info(void)
 
         const GstMetaInfo *meta = gst_meta_register (gst_message_api_get_type(), 
                                                      GST_MESSAGE_META_IMPL_NAME,           
-                                                     sizeof (GstLVAMessageMeta),    
+                                                     sizeof (GstMessageMeta),    
                                                      (GstMetaInitFunction)gst_message_meta_init,
                                                      (GstMetaFreeFunction) gst_message_meta_free,
                                                      (GstMetaTransformFunction)gst_message_meta_transform);
@@ -86,27 +86,27 @@ const GstMetaInfo *gst_message_meta_get_info(void)
 }
 
 // Gets message from the buffer
-GstLVAMessage *gst_lva_buffer_get_message(GstBuffer *buffer)
+GstMessage *gst_buffer_get_message(GstBuffer *buffer)
 {
-    GstLVAMessageMeta *gstlvameta = (GstLVAMessageMeta *)gst_buffer_get_meta((buffer), GST_MESSAGE_META_TYPE);
+    GstMessageMeta *gstmeta = (GstMessageMeta *)gst_buffer_get_meta((buffer), GST_MESSAGE_META_TYPE);
     
-    if (gstlvameta == NULL)
+    if (gstmeta == NULL)
         return gst_message_empty_message();
     else
-        return &(gstlvameta->message);       
+        return &(gstmeta->message);       
 }
 
 
 // Removes message from buffer
-gboolean gst_lva_buffer_remove_message(GstBuffer *buffer)
+gboolean gst_buffer_remove_message(GstBuffer *buffer)
 {   
-    GstLVAMessageMeta *gstlvameta = (GstLVAMessageMeta *)gst_buffer_get_meta((buffer), GST_MESSAGE_META_TYPE);
+    GstMessageMeta *gstmeta = (GstMessageMeta *)gst_buffer_get_meta((buffer), GST_MESSAGE_META_TYPE);
 
-    if (gstlvameta == NULL)
+    if (gstmeta == NULL)
         return TRUE;
     
     if ( !gst_buffer_is_writable(buffer))
         return FALSE;
     
-    return gst_buffer_remove_meta(buffer, &(gstlvameta->gstMeta));
+    return gst_buffer_remove_meta(buffer, &(gstmeta->gstMeta));
 }
