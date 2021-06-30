@@ -1,6 +1,8 @@
 import os
+import random
 from random import randint
 import numpy as np
+import time
 import gi
 import io
 from io import BytesIO
@@ -16,10 +18,11 @@ gi.require_version('GstVideo', '1.0')
 
 from gi.repository import GObject, Gst, GstVideo
 
-from gst_message import add_message, remove_message, get_message
+from gst_ava_message import add_message, remove_message, get_message
 from exception_handler import PrintGetExceptionDetails
 import pyds
 import inferencing_pb2
+import media_pb2
 import extension_pb2
 import configparser
 import platform
@@ -58,7 +61,7 @@ def get_num_channels(fmt: GstVideo.VideoFormat) -> int:
 	return -1
 
 
-class gst_pipeline:
+class gst_ava_Pipeline:
 	def __init__(self, msgQueue, graphName, width, height):
 		self.msgQueue = msgQueue
 		self.graphName = graphName
@@ -77,7 +80,7 @@ class gst_pipeline:
 
 		classificationFile = os.environ.get('GST_CLASSIFICATION_FILES')
 		
-		pipelineHeader = "appsrc name=source ! videoconvert ! nvvideoconvert nvbuf-memory-type={0} ! capsfilter caps=video/x-raw(memory:NVMM) ! m.sink_0 nvstreammux name=m batch-size=1 width={1} height={2} batched-push-timeout=33000 nvbuf-memory-type={0} ! nvinfer name=primary-inference config-file-path={3} ! ".format(nv_memory_type, width, height, configFile)
+		pipelineHeader = "appsrc name=avasource ! videoconvert ! nvvideoconvert nvbuf-memory-type={0} ! capsfilter caps=video/x-raw(memory:NVMM) ! m.sink_0 nvstreammux name=m batch-size=1 width={1} height={2} batched-push-timeout=33000 nvbuf-memory-type={0} ! nvinfer name=primary-inference config-file-path={3} ! ".format(nv_memory_type, width, height, configFile)
 		
 		pipelineTracker = ""
 		
@@ -115,7 +118,7 @@ class gst_pipeline:
 			for file in classificationFile.split(','):
 				pipelineClassifiers += " nvinfer config-file-path={} !".format(file)
 
-		pipelineFooter = " nvvideoconvert name=converter nvbuf-memory-type={} ! videoconvert ! video/x-raw,format=RGB ! appsink name=sink".format(nv_memory_type)
+		pipelineFooter = " nvvideoconvert name=converter nvbuf-memory-type={} ! videoconvert ! video/x-raw,format=RGB ! appsink name=avasink".format(nv_memory_type)
 		
 		pipeline = pipelineHeader + pipelineTracker + pipelineClassifiers + pipelineFooter
 
@@ -126,24 +129,24 @@ class gst_pipeline:
 		
 		self._pipeline = Gst.parse_launch(pipeline)
 
-		self._src = self._pipeline.get_by_name('source')
+		self._src = self._pipeline.get_by_name('avasource')
 		self._src.connect('need-data', self.start_feed)
 		self._src.connect('enough-data', self.stop_feed)
 
 		self._src.set_property('format', 'time')
 		self._src.set_property('do-timestamp', True)
 
-		self._sink = self._pipeline.get_by_name('sink')
+		self._sink = self._pipeline.get_by_name('avasink')
 		self._sink.set_property("emit-signals", True)
 		self._sink.set_property("max-buffers", 1)		
 
 		self._sink.connect("new-sample", self.on_new_sample)
 
-	def get_MediaStreamMessage(self, buffer, gst_message, ih, iw):
+	def get_ava_MediaStreamMessage(self, buffer, gst_ava_message, ih, iw):
 
 		msg = extension_pb2.MediaStreamMessage()		
-		msg.ack_sequence_number = gst_message.sequence_number
-		msg.media_sample.timestamp = gst_message.timestamp
+		msg.ack_sequence_number = gst_ava_message.sequence_number
+		msg.media_sample.timestamp = gst_ava_message.timestamp
 			
 		# # Retrieve batch metadata from the gst_buffer
 		# # Note that pyds.gst_buffer_get_nvds_batch_meta() expects the
@@ -341,9 +344,9 @@ class gst_pipeline:
 			height = caps.get_structure(0).get_value('height')
 			width = caps.get_structure(0).get_value('width')						
 			
-			gst_message = get_message(buffer)
+			gst_ava_message = get_message(buffer)
 			
-			msg = self.get_MediaStreamMessage(buffer, gst_message, height, width)
+			msg = self.get_ava_MediaStreamMessage(buffer, gst_ava_message, height, width)
 
 			if msg is None:
 				logging.info('media stream message is None')
