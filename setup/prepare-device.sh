@@ -40,7 +40,7 @@ sudo chown -R localedgeuser:localedgegroup /var/lib/videoanalyzer/
 sudo mkdir -p /var/lib/videoanalyzer/tmp/ 
 sudo chown -R localedgeuser:localedgegroup /var/lib/videoanalyzer/tmp/
 sudo mkdir -p /var/lib/videoanalyzer/logs
-sudo chown -R /localedgeuser:localedgegroup /var/lib/videoanalyzer/logs
+sudo chown -R localedgeuser:localedgegroup /var/lib/videoanalyzer/logs
 
 # output folder for file sink
 sudo mkdir -p /var/media
