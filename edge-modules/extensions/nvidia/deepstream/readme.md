@@ -17,18 +17,6 @@ Additional open source technologies included are [nginx](https://www.nginx.com/)
 2. [Visual Studio Code](https://code.visualstudio.com/) with [Azure IoT Tools extension](https://marketplace.visualstudio.com/items?itemName=vsciot-vscode.azure-iot-tools).
 3. A device with [IoT Edge runtime](https://docs.microsoft.com/azure/iot-edge/how-to-install-iot-edge-windows) installed and [registered as an IoT Edge device](https://docs.microsoft.com/azure/iot-edge/how-to-register-device). You can use a Linux machine or a Windows machine with [WSL2](https://docs.microsoft.com/windows/wsl/about#what-is-wsl-2) for this purpose.
 
-## Building the container image
-
-Build the container image (should take some minutes) by running the following Docker command from the same directory as this readme file.
-
-```bash
-docker build -f ./docker/Dockerfile -t ava-gst-deepstream:latest .
-```
-
-## Upload Docker image to Azure container registry
-
-Follow instructions in [Push and Pull Docker images - Azure Container Registry](http://docs.microsoft.com/azure/container-registry/container-registry-get-started-docker-cli) to save your image for later use on another machine.
-
 ## Getting Started
 
 1. Deploy the required Video Analyzer resources
@@ -86,6 +74,20 @@ Verify NVIDIA runtime:
 sudo systemctl restart docker
 sudo docker run --runtime nvidia nvidia/cuda:10.1-base nvidia-smi
 ```
+
+## Building the container image
+
+Build the container image (should take some minutes) by running the following Docker command from the same directory as this readme file.
+
+```bash
+docker build -f ./docker/Dockerfile -t ava-gst-deepstream:latest .
+```
+
+## Upload Docker image to Azure container registry
+
+Follow instructions in [Push and Pull Docker images - Azure Container Registry](http://docs.microsoft.com/azure/container-registry/container-registry-get-started-docker-cli) to save your image for later use on another machine.
+
+Note: Please make sure you're using the ACR credentials (CONTAINER_REGISTRY_USERNAME_myacr and CONTAINER_REGISTRY_PASSWORD_myacr) that are located in the .env file and ensure to push the image to that ACR.
 
 ## Deployment
 Please follow the instructions for [Generating and deploying the deployment manifest](https://docs.microsoft.com/en-us/azure/azure-video-analyzer/video-analyzer-docs/detect-motion-emit-events-quickstart?pivots=programming-language-csharp#generate-and-deploy-the-deployment-manifest).
