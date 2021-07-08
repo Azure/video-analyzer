@@ -58,12 +58,6 @@
         "default": "dummyPassword"
       },
       {
-        "name": "grpcImageEncoding",
-        "type": "String",
-        "description": "image encoding for frames",
-        "default": "jpeg"
-      },
-      {
         "name": "grpcImageQuality",
         "type": "String",
         "description": "image encoding quality for frames (valid for JPG encoding)",
