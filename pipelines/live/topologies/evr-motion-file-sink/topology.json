@@ -88,7 +88,7 @@
         "activationEvaluationWindow": "PT1S",
         "activationSignalOffset": "PT0S",
         "minimumActivationTime": "PT10S",
-        "maximumActivationTime": "PT10S"
+        "maximumActivationTime": "PT30S"
       }
     ],
     "sinks": [
