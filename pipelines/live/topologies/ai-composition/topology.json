@@ -86,6 +86,12 @@
         "type": "String",
         "description": "motion detection sensitivity",
         "default": "medium"
+      },
+      {
+        "name": "grpcExtensionConfiguration",
+        "type": "String",
+        "description": "motion detection sensitivity",
+        "default": "{ \"inferenceConfidence\": 0.7, \"objectLabel\": \"car\" }"
       }
     ],
     "sources": [
@@ -111,14 +117,7 @@
         "sensitivity": "${motionSensitivity}",
         "inputs": [
           {
-            "nodeName": "rtspSource",
-            "outputSelectors": [
-              {
-                "property": "mediaType",
-                "operator": "is",
-                "value": "video"
-              }
-            ]
+            "nodeName": "rtspSource"
           }
         ]
       },
@@ -151,14 +150,7 @@
         },
         "inputs": [
           {
-            "nodeName": "motionDetection",
-            "outputSelectors": [
-              {
-                "property": "mediaType",
-                "operator": "is",
-                "value": "video"
-              }
-            ]
+            "nodeName": "motionDetection"
           }
         ]
       },
@@ -174,6 +166,7 @@
             "password": "${grpcExtensionPassword}"
           }
         },
+        "extensionConfiguration": "${grpcExtensionConfiguration}",
         "dataTransfer": {
           "mode": "sharedMemory",
           "SharedMemorySizeMiB": "75"
