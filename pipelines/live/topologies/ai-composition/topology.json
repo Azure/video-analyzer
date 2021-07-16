@@ -90,7 +90,7 @@
       {
         "name": "grpcExtensionConfiguration",
         "type": "String",
-        "description": "motion detection sensitivity",
+        "description": "Extension configuration properties",
         "default": "{ \"inferenceConfidence\": 0.7, \"objectLabel\": \"car\" }"
       }
     ],
