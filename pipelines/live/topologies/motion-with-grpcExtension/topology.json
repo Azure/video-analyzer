@@ -165,7 +165,7 @@
         },
         "inputs": [
           {
-            "nodeName": "rtspSource",
+            "nodeName": "motionDetection",
             "outputSelectors": [
               {
                 "property": "mediaType",
