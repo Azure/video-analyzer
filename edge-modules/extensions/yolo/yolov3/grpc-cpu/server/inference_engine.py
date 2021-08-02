@@ -14,6 +14,7 @@ from enum import Enum
 from shared_memory import SharedMemoryManager
 from exception_handler import PrintGetExceptionDetails
 from model_wrapper import YoloV3Model
+import json
 
 # Get debug flag from env variable (Returns None if not set)
 # Set this environment variables in the IoTEdge Deployment manifest to activate debugging.
@@ -186,6 +187,17 @@ class InferenceEngine(extension_pb2_grpc.MediaGraphExtensionServicer):
 
         logging.info('Connection created with peer {0}.\nMediaStreamDescriptor:\n{1}'.format(context.peer(), clientState._mediaStreamDescriptor))
         logging.debug('[Received] SeqNum: {0:07d} | AckNum: {1}'.format(requestSeqNum, requestAckSeqNum))
+        logging.debug("Extension configuration: {0}".format(mediaStreamMessageRequest.media_stream_descriptor.extension_configuration))
+
+        if(len(mediaStreamMessageRequest.media_stream_descriptor.extension_configuration) > 0):
+            try:
+                extConfObj = json.loads(mediaStreamMessageRequest.media_stream_descriptor.extension_configuration)
+                self.inferenceConfidence = extConfObj['inferenceConfidence']
+                self.objectTag = extConfObj['objectLabel']
+                logging.info("Overriding inferenceConfidence and objectTag with extension configuration.")
+                logging.info('Inference Confidence: {0}, Object Label: {1}'.format(self.inferenceConfidence, self.objectTag))
+            except Exception as err:
+                logging.info('Error deserializing extension configuration, using deployment properties: {}'.format(err))
 
         # First message response ...
         mediaStreamMessage = extension_pb2.MediaStreamMessage(
@@ -228,7 +240,7 @@ class InferenceEngine(extension_pb2_grpc.MediaGraphExtensionServicer):
                     return
 
                 mediaStreamMessage = extension_pb2.MediaStreamMessage()
-
+               
                 # Check confidence
                 allConfidenceReached = True
                 for inference in mediaStreamMessageRequest.media_sample.inferences:
@@ -236,7 +248,7 @@ class InferenceEngine(extension_pb2_grpc.MediaGraphExtensionServicer):
                     if(confidence < self.inferenceConfidence):
                         allConfidenceReached = False
                         break
-                
+              
                 if(len(mediaStreamMessageRequest.media_sample.inferences) > 0 and allConfidenceReached):
                     # Return acknowledge message
                     mediaStreamMessage.sequence_number = responseSeqNum
@@ -248,7 +260,7 @@ class InferenceEngine(extension_pb2_grpc.MediaGraphExtensionServicer):
 
                         if(self.objectTag is None):
                             self.objectTag = objectLabel
-
+                        
                         if(self.objectTag == objectLabel):
                             inference = mediaStreamMessage.media_sample.inferences.add()
                             inference.type = inferencing_pb2.Inference.InferenceType.ENTITY
