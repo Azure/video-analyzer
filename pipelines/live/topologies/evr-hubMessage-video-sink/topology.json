@@ -67,7 +67,7 @@
         }
       },
       {
-        "@type": "#Microsoft.VideoAnalyzer.IoTHubMessageSource",
+        "@type": "#Microsoft.VideoAnalyzer.IotHubMessageSource",
         "name": "iotMessageSource",
         "hubInputName": "${hubSourceInput}"
       }
