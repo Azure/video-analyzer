@@ -117,7 +117,7 @@
       {
         "@type": "#Microsoft.VideoAnalyzer.VideoSink",
         "name": "videoSink",
-        "videoName": "personcount",
+        "videoName": "personcount-${System.TopologyName}-${System.PipelineName}",
         "inputs": [
           {
             "nodeName": "rtspSource"
