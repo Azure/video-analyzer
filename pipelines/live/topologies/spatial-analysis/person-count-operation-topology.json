@@ -81,6 +81,10 @@
             ]
           }
         ],
+        "samplingOptions": {         
+            "skipSamplesWithoutAnnotation": "false",                
+            "maximumSamplesPerSecond": "15.0"                        
+          },
         "operation": {
           "@type": "#Microsoft.VideoAnalyzer.SpatialAnalysisPersonCountOperation",
           "zones": [
@@ -92,10 +96,10 @@
               },
               "events": [
                 {
-                  "trigger": "event",
+                  "trigger": "interval",
                   "outputFrequency": "1",
-                  "threshold": "16",
-                  "focus": "bottomCenter"
+                  "threshold": "5",
+                  "focus": "footprint"
                 }
               ]
             }
