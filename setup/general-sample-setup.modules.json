@@ -61,7 +61,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "mcr.microsoft.com/lva-utilities/rtspsim-live555:1.2",
+              "image": "mcr.microsoft.com/ava-utilities/rtspsim-live555:1.2",
               "createOptions": "{ \"HostConfig\": { \"Binds\": [ \"$VIDEO_INPUT_FOLDER_ON_DEVICE:/live/mediaServer/media\" ] } }"
             }
           }
