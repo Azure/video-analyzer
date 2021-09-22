@@ -31,16 +31,20 @@ def scoreRRS():
 
         if len(detectedObjects) > 0:
             respBody = {                    
-                        "inferences" : detectedObjects
-                    }
+                "inferences" : detectedObjects
+            }
 
-            respBody = json.dumps(respBody)
-            
             logging.info("[AVAX] Sending response.")
-            return Response(respBody, status= 200, mimetype ='application/json')
         else:
+            respBody = {
+                "inferences" : []
+            }
+
             logging.info("[AVAX] Sending empty response.")
-            return Response(status= 204)
+
+        respBody = json.dumps(respBody)
+
+        return Response(respBody, status= 200, mimetype ='application/json')
 
     except:
         PrintGetExceptionDetails()
