@@ -11,7 +11,7 @@ Note: References to third-party software in this repo are for informational and 
 
 ## Building the docker container
 
-Clone the **video-analyzer** repository and locate this folder (**video-analyzer/edge-modules/sources/rtspsim-live555**) in a command window. Then, run the following container image in Docker by running the following command: 
+Clone the **video-analyzer** repository and locate this folder (**video-analyzer/edge-modules/sources/rtspsim-live555**) in a command window. Then, build the RTSP Simulator container image in Docker by running the following command: 
 
 ```powershell
     docker build . -t live555:latest
