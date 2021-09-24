@@ -189,7 +189,7 @@ class InferenceEngine(extension_pb2_grpc.MediaGraphExtensionServicer):
         logging.debug('[Received] SeqNum: {0:07d} | AckNum: {1}'.format(requestSeqNum, requestAckSeqNum))
         logging.debug("Extension configuration: {0}".format(mediaStreamMessageRequest.media_stream_descriptor.extension_configuration))
 
-        if(len(mediaStreamMessageRequest.media_stream_descriptor.extension_configuration) > 0):
+        if(len(clientState._mediaStreamDescriptor.extension_configuration) > 0):
             try:
                 extConfObj = json.loads(mediaStreamMessageRequest.media_stream_descriptor.extension_configuration)
                 self.inferenceConfidence = extConfObj['inferenceConfidence']
