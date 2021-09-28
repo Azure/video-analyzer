@@ -11,17 +11,21 @@ import logging
 class YoloV3Model:
     def __init__(self):
         try:
+            self._lock = threading.Lock()
             self._modelFileName = 'yolov3-10.onnx'
             self._modelLabelFileName = 'coco_classes.txt'
-            self._lock = threading.Lock()
+            self._labelList = None
 
-            with open(self._labelFileName, "r") as f:
+            with open(self._modelLabelFileName, "r") as f:
                 self._labelList = [l.rstrip() for l in f]
-            
+
             self._onnxSession = onnxruntime.InferenceSession(self._modelFileName)
+            self.image_shape = [416, 416]
+            self.device = onnxruntime.get_device()
 
         except:
             PrintGetExceptionDetails()
+            raise
 
     def Preprocess(self, cvImage):
         try:
@@ -34,14 +38,16 @@ class YoloV3Model:
             return imageBlob
         except:
             PrintGetExceptionDetails()
+            raise
 
     def Score(self, cvImage):
         try:
             with self._lock:
                 imageBlob = self.Preprocess(cvImage)
-                boxes, scores, indices = self._onnxSession.run(None, {"input_1": imageBlob, "image_shape":np.array([[416, 416]], dtype=np.float32)})
-        
-            return self.Postprocess(boxes, scores, indices)
+                boxes, scores, indices = self._onnxSession.run(None, {"input_1": imageBlob, "image_shape":np.array([self.image_shape], dtype=np.float32)})
+
+            return boxes, scores, indices
 
         except:
             PrintGetExceptionDetails()
+            raise

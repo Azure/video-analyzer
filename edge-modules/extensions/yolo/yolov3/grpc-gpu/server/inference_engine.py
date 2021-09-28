@@ -61,6 +61,8 @@ class InferenceEngine(extension_pb2_grpc.MediaGraphExtensionServicer):
         self.inferenceConfidence = inferenceConfidence
         self.objectTag = objectTag
 
+        logging.info(f'Using: {self._tYoloV3.device}')
+
     # Debug method for dumping received images with analysis results
     def CreateDebugOutput(self, requestSeqNum, cvImage, boxes, scores, indices, confidenceThreshold=0.1):
         try:
@@ -189,7 +191,7 @@ class InferenceEngine(extension_pb2_grpc.MediaGraphExtensionServicer):
         logging.debug('[Received] SeqNum: {0:07d} | AckNum: {1}'.format(requestSeqNum, requestAckSeqNum))
         logging.debug("Extension configuration: {0}".format(mediaStreamMessageRequest.media_stream_descriptor.extension_configuration))
 
-        if(len(clientState._mediaStreamDescriptor.extension_configuration) > 0):
+        if(len(mediaStreamMessageRequest.media_stream_descriptor.extension_configuration) > 0):
             try:
                 extConfObj = json.loads(mediaStreamMessageRequest.media_stream_descriptor.extension_configuration)
                 self.inferenceConfidence = extConfObj['inferenceConfidence']
