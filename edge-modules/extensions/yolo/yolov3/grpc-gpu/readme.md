@@ -35,6 +35,8 @@ Please see [this](https://aka.ms/ava-grpc-quickstart) quickstart.
 [GPU optimized virtual machine sizes](https://docs.microsoft.com/en-us/azure/virtual-machines/sizes-gpu)
 
 ### Installing CUDA drivers:
+**Note:** By default, the latest version of onnxruntime-gpu is installed via the Dockerfile. You can check for the latest CUDA requirements [here](https://onnxruntime.ai/docs/execution-providers/CUDA-ExecutionProvider.html#requirements). We have tested this sample using CUDA 10.1, so if the module does not run properly, you can downgrade to 10.1.
+
 * CUDA drivers for your NVIDIA GPU: [Download Drivers | NVIDIA](https://www.nvidia.com/Download/index.aspx?lang=en-us)
 * For N-series VMs: [NVIDIA GPU Driver Extension for Linux](https://docs.microsoft.com/en-us/azure/virtual-machines/extensions/hpccompute-gpu-linux)
 
