@@ -29,6 +29,16 @@ YOLOv3:
 ## Running and testing
 Please see [this](https://aka.ms/ava-grpc-quickstart) quickstart.
 
+**Note:** This container requires a GPU optimized VM with CUDA drivers installed in order to run. 
+
+### Select the VM size:
+[GPU optimized virtual machine sizes](https://docs.microsoft.com/en-us/azure/virtual-machines/sizes-gpu)
+
+### Installing CUDA drivers:
+* Set up Nvidia container toolkit: [Installation Guide — NVIDIA Cloud Native Technologies documentation](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#setting-up-nvidia-container-toolkit)
+
+* For N-series VMs: [NVIDIA GPU Driver Extension for Linux](https://docs.microsoft.com/en-us/azure/virtual-machines/extensions/hpccompute-gpu-linux)
+
 ## Compiling the protobuf files for python
 
 Install the protoc tool for python:
