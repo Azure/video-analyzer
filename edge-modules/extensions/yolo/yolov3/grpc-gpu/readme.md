@@ -35,9 +35,11 @@ Please see [this](https://aka.ms/ava-grpc-quickstart) quickstart.
 [GPU optimized virtual machine sizes](https://docs.microsoft.com/en-us/azure/virtual-machines/sizes-gpu)
 
 ### Installing CUDA drivers:
-* Set up Nvidia container toolkit: [Installation Guide — NVIDIA Cloud Native Technologies documentation](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#setting-up-nvidia-container-toolkit)
-
+* CUDA drivers for your NVIDIA GPU: [Download Drivers | NVIDIA](https://www.nvidia.com/Download/index.aspx?lang=en-us)
 * For N-series VMs: [NVIDIA GPU Driver Extension for Linux](https://docs.microsoft.com/en-us/azure/virtual-machines/extensions/hpccompute-gpu-linux)
+
+### Setup NVIDIA container toolkit:
+[Installation Guide — NVIDIA Cloud Native Technologies documentation](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#setting-up-nvidia-container-toolkit)
 
 ## Compiling the protobuf files for python
 
