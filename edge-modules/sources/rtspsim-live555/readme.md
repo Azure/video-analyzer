@@ -1,6 +1,6 @@
 # RTSP Simulator using Live555 Media Server
 
-The following instructions enable using [Live555 Media Server](http://www.live555.com/mediaServer/) as a RTSP simulator in a docker container.
+The following instructions enable using [Live555 Media Server](http://www.live555.com/mediaServer/) as a RTSP simulator in a Docker container.
 
 Note: References to third-party software in this repo are for informational and convenience purposes only. Microsoft does not endorse nor provide rights for the third-party software. For more information on third-party software please see [Live555 Media Server](http://www.live555.com/mediaServer/).
 
@@ -11,7 +11,7 @@ Note: References to third-party software in this repo are for informational and 
 
 ## Building the docker container
 
-Build the container image (should take around 10 minutes or less) by running the following docker command from a command window in that directory
+Clone the **video-analyzer** repository and locate this folder (**video-analyzer/edge-modules/sources/rtspsim-live555**) in a command window. Then, build the RTSP Simulator container image in Docker by running the following command: 
 
 ```powershell
     docker build . -t live555:latest
@@ -21,7 +21,7 @@ The build may generate warnings, but they should not prevent the server from wor
 
 ## Running and Testing
 
-Run the container using the following docker command
+Run the container using the following Docker command
 
 ```powershell
     docker run -p 554:554  -i live555:latest
@@ -99,7 +99,7 @@ rtsp://yourcontainerdns.yourregion.azurecontainer.io:554/media/camera-300s.mkv
 
 ## Cleanup
 
-Once you are done, stop the docker container by executing the following commands
+Once you are done, stop the Docker container by executing the following commands
 
 ```powershell
     docker ps -a
