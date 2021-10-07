@@ -19,7 +19,7 @@ To build the container image locally, run the following Docker command from a te
 
 YOLOv3:
 ```bash
-    docker build -f yolov3.dockerfile . -t avaextension:grpc-yolov3-onnx-v1.0
+    docker build -f Dockerfile . -t avaextension:grpc-yolov3-onnx-v1.0
 ```
 
 > <span> [!TIP] </span>  
