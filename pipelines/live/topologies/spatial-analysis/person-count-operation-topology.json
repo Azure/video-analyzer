@@ -107,6 +107,22 @@
               }
             ]
           }
+        },
+        {
+          "@type": "#Microsoft.VideoAnalyzer.SignalGateProcessor",
+          "name": "signalGateProcessor",
+          "inputs": [
+            {
+              "nodeName": "computerVisionExtension"
+            },
+            {
+              "nodeName": "rtspSource"
+            }
+          ],
+          "activationEvaluationWindow": "PT1S",
+          "activationSignalOffset": "PT0S",
+          "minimumActivationTime": "PT30S",
+          "maximumActivationTime": "PT30S"
         }
       ],
       "sinks": [
@@ -125,11 +141,8 @@
             "name": "videoSink",
             "videoName": "personCount",
             "inputs": [
-              {
-                  "nodeName": "rtspSource"
-                },
                 {
-                  "nodeName": "computerVisionExtension"
+                  "nodeName": "signalGateProcessor"
                 }
             ],
             "videoCreationProperties": {
