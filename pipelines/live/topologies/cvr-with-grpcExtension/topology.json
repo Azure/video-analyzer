@@ -1,5 +1,5 @@
 {
-  "@apiVersion": "1.0",
+  "@apiVersion": "1.1",
   "name": "CVRWithGrpcExtension",
   "properties": {
     "description": "Continuous video recording and inferencing using gRPC Extension",
@@ -20,12 +20,6 @@
         "name": "rtspUrl",
         "type": "String",
         "description": "rtsp Url"
-      },
-      {
-        "name": "videoSinkName",
-        "type": "String",
-        "description": "video sink name",
-        "default": "sampleVideoSinkFromCVR-AVAEdge"
       },
       {
         "name": "grpcExtensionAddress",
