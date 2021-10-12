@@ -1,5 +1,5 @@
 {
-  "@apiVersion": "1.0",
+  "@apiVersion": "1.1",
   "name": "InferencingWithOpenVINOgRPC",
   "properties": {
     "description": "Analyzing live video using gRPCExtension to send video frames to the OpenVINO DL Streamer – Edge AI Extension module, from Intel",
