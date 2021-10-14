@@ -1,5 +1,5 @@
 {
-  "@apiVersion": "1.0",
+  "@apiVersion": "1.1",
   "name": "InferencingWithOpenVINO",
   "properties": {
     "description": "Analyzing live video using HTTP Extension to send images to the OpenVINO Model Server – AI Extension module, from Intel",
