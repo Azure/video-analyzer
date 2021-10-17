@@ -1,6 +1,6 @@
 
 {
-    "@apiVersion": "1.0",
+    "@apiVersion": "1.1",
     "name":"LineCrossingWithHttpExtension",
     "properties":{
         "description":"Track Objects and use Line Crossing to emit events",
