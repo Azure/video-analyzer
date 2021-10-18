@@ -1,5 +1,5 @@
 {
-  "@apiVersion": "1.0",
+  "@apiVersion": "1.1",
   "name": "AudioVideo",
   "properties": {
     "description": "Record video clip including audio",
