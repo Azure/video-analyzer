@@ -28,6 +28,18 @@
         "baseTime": {
             "type": "string",
             "defaultValue": "[utcNow('u')]"
+        },
+        "iotHubManagedIdendity": {
+            "type": "string",
+            "metadata": {
+                "description": "This is the value for the IoT Hub user assignted managed identity."
+            }
+        },
+        "hubName": {
+            "type": "string",
+            "metadata": {
+                "description": "This is the value for the IoT Hub name."
+            }
         }
     },
     "variables": {
@@ -35,7 +47,7 @@
         "accountName": "[concat(parameters('namePrefix'),uniqueString(resourceGroup().id))]",
         "edgeModuleName": "[parameters('edgeModuleName')]",
         "tokenExpiration": {
-            "expirationDate": "[dateTimeAdd(parameters('baseTime'), 'P7D', 'yyyy-MM-ddTHH:mm:ss+00:00')]"
+        "expirationDate": "[dateTimeAdd(parameters('baseTime'), 'P7D', 'yyyy-MM-ddTHH:mm:ss+00:00')]"
         },
         "managedIdentityName": "[concat(parameters('namePrefix'),'-',resourceGroup().name,'-storage-access-identity')]"
     },
@@ -152,7 +164,7 @@
         {
             "type": "Microsoft.Media/videoAnalyzers",
             "comments": "The Azure Video Analyzer account",
-            "apiVersion": "2021-05-01-preview",
+            "apiVersion": "2021-11-01-preview",
             "name": "[variables('accountName')]",
             "location": "[resourceGroup().location]",
             "dependsOn": [
@@ -166,13 +178,22 @@
                             "userAssignedIdentity": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities',variables('managedIdentityName'))]"
                         }
                     }
+                ],
+                "iotHubs": [
+                    {
+                        "id": "[resourceId('Microsoft.Devices/IotHubs', parameters('hubName'))]",
+                        "identity": {
+                            "userAssignedIdentity": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities',parameters('iotHubManagedIdendity'))]"
+                        }
+                    }
                 ]
             },
             "identity": {
                 "type": "UserAssigned",
                 "userAssignedIdentities": {
-                    "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities',variables('managedIdentityName'))]": {}
-                }
+                    "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities',variables('managedIdentityName'))]": {},
+                    "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities',parameters('iotHubManagedIdendity'))]": {}
+                }             
             },
             "tags": "[parameters('resourceTags')]"
         },
