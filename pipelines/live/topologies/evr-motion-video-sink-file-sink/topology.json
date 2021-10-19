@@ -1,5 +1,5 @@
 {
-  "@apiVersion": "1.0",
+  "@apiVersion": "1.1",
   "name": "EVRToFilesAndVideoSinkOnMotion",
   "properties": {
     "description": "Event-based video recording to local files based on motion events",
