@@ -93,8 +93,8 @@
                 "ipFilterRules": [],
                 "eventHubEndpoints": {
                     "events": {
-                        "retentionTimeInDays": 1,
-                        "partitionCount": 8
+                        "retentionTimeInDays": 7,
+                        "partitionCount": 4
                     }
                 }
             },
