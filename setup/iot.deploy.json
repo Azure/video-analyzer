@@ -77,7 +77,7 @@
             "type": "Microsoft.Devices/IotHubs",
             "comments": "Video Analyzer is hosted on an IoT Edge device. The host device is managed through an IoT Hub. The keys for accessing the hub are in the template's output.",
             "apiVersion": "[variables('hubApiVersion')]",
-            "name": "[concat (variables('hubName'))]",
+            "name": "[variables('hubName')]",
             "location": "[resourceGroup().location]",
             "identity": {
                 "type": "UserAssigned",
