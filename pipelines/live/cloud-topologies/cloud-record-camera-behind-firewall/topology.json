@@ -65,8 +65,8 @@
                 "name": "videoSink",
                 "videoName": "${videoName}",
                 "videoCreationProperties": {
-                  "title": "Default title for all videos recorded using this topology",
-                  "description": "Default description for all videos recorded using this topology",
+                  "title": "sample-record-camera-behind-firewall",
+                  "description": "Sample video using CVR from private camera",
                   "segmentLength": "PT30S",
                   "retentionPeriod": "P30D"
                 },
