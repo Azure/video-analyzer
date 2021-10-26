@@ -51,7 +51,7 @@
                 "videoName": "${videoName}",
                 "videoCreationProperties": {
                   "title": "sample-record-camera-open-internet",
-                  "description": "Sample CVR video from public camera",
+                  "description": "Sample video using CVR from public camera",
                   "segmentLength": "PT30S",
                   "retentionPeriod": "P30D"
                 },
