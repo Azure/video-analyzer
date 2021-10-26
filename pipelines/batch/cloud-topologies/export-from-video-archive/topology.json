@@ -54,8 +54,8 @@
                 "@type": "#Microsoft.VideoAnalyzer.VideoSink",
                 "videoName": "${outputVideoNameParameter}",
                 "videoCreationProperties": {
-                    "title": "Default title for all video resources created with this topology",
-                    "description": "Default description for all video resources created with this topology"
+                        title: "export-from-video-archive",
+                        description: "Sample for exporting portion of recorded video as an MP4 file"
                 },
                 "inputs": [
                 {
