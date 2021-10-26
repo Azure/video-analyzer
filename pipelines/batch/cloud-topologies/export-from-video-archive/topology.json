@@ -54,8 +54,8 @@
                 "@type": "#Microsoft.VideoAnalyzer.VideoSink",
                 "videoName": "${outputVideoNameParameter}",
                 "videoCreationProperties": {
-                        title: "export-from-video-archive",
-                        description: "Sample for exporting portion of recorded video as an MP4 file"
+                   "title": "export-from-video-archive",
+                   "description": "Sample for exporting portion of recorded video as an MP4 file"
                 },
                 "inputs": [
                 {
