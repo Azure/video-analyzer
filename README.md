@@ -3,11 +3,11 @@
 
 ## Introduction
 
-[Azure Video Analyzer](https://azure.microsoft.com/products/video-analyzer) (AVA) provides you a platform for building intelligent video applications that span the edge and the cloud. The platform consists of an IoT Edge module and an Azure service. It offers the capability to capture, record, and analyze live videos and publish the results, namely video and insights from video, to edge or cloud. The platform can be used to enhance IoT solutions with video analytics.
+[Azure Video Analyzer](https://azure.microsoft.com/products/video-analyzer) (AVA) provides a platform for you to build intelligent video applications that span the edge and the cloud. The platform consists of an IoT Edge module and an Azure service. It offers the capability to capture, record, and analyze live videos and publish the results, namely video and insights from video, to edge or cloud.
 
 ## Azure Video Analyzer on IoT Edge
 
-Video Analyzer is an [IoT Edge module](http://docs.microsoft.com/azure/marketplace/iot-edge-module) which can be used with other Azure IoT Edge modules such as Stream Analytics, Cognitive Services, and other Azure cloud services such as Event Hub and Cognitive Services to build powerful hybrid (that is, edge + cloud) applications. This extensible edge module seamlessly integrates with various AI edge modules such as Azure Cognitive Services containers or custom edge modules built using open-source machine learning models and your training data. By building on the Video Analyzer platform, you can analyze live video without worrying about the complexity of building, operating, and maintaining a complex system.
+Azure Video Analyzer is an [IoT Edge module](http://docs.microsoft.com/azure/marketplace/iot-edge-module) which offers functionality that can be combined with other Azure edge modules such as Stream Analytics on IoT Edge, Cognitive Services on IoT Edge as well as Azure services in the cloud such as Event Hub, Cognitive Services, etc. to build powerful hybrid (i.e. edge + cloud) applications. Video Analyzer is designed to be a pluggable platform, enabling you to plug video analysis edge modules (e.g. Cognitive services containers, custom edge modules built by you with open source machine learning models or custom models trained with your own data) and use them to analyze live video without worrying about the complexity of building and running a live video pipeline.
 
 With Video Analyzer, you can continue to use your CCTV cameras with your existing video management systems (VMS) and build video analytics apps independently. Video Analyzer can be used in conjunction with existing computer vision SDKs and toolkits to build cutting edge hardware accelerated live video analytics enabled IoT solutions. Apart from analyzing live video, the edge module also enables you to optionally record video locally on the edge or to the cloud, and to publish video insights to Azure services (on the edge and/or in the cloud). If video and video insights are recorded to the cloud, then the Video Analyzer cloud service can be used to manage them.
 
@@ -21,7 +21,7 @@ The Video Analyzer cloud service can therefore be also used to enhance IoT solut
 
 ## This repo
 
-This repository is a starting point to learn about and engage in AVA open source projects.This repository is not an official AVA product support location, however, we will respond to issues filed here as best we can.
+This repository is a starting point to learn about and engage in Video Analyzer open source projects.This repository is not an official Video Analyzer product support location, however, we will respond to issues filed here as best we can.
 
 ## Contributing
 
