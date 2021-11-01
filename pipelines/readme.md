@@ -8,14 +8,18 @@ A pipeline topology can have one or more of the following types of nodes:
 * **Processor nodes** enable processing of media within the pipeline topology.
 * **Sink nodes** enable delivering the processing results to services and apps outside the pipeline topology.
 
-The diagram below provides a graphical representation of a pipeline topology.  
+Pipelines can be defined and instantiated at the edge for on premises video processing, or in the cloud. The diagrams below provides graphical representations of such pipelines.  
 
 <br>
 <p align="center">
-  <img src="./images/pipeline.png" title="pipeline topology"/>
+  <img src="./images/pipeline.png" title="pipeline topology on the edge"/>
+</p>
+<br> <br>
+<p align="center">
+  <img src="./images/pipeline-in-cloud.png" title="pipeline topology in cloud service"/>
 </p>
 <br>
 
-You can create different topologies for different scenarios by selecting which nodes are in the topology, how they are connected, with parameters as placeholders for values. A pipeline is an individual instance of a specific pipeline topology. A pipeline is where media is actually processed. Pipelines can be associated with individual cameras or recorded videos through user defined parameters declared in the pipeline topology. Instances of a live topologies are called live pipelines, and instances of a batch topology are referred to as pipeline jobs.
+You can create different topologies for different scenarios by selecting which nodes are in the topology, how they are connected, with parameters as placeholders for values. A pipeline is an individual instance of a specific pipeline topology. A pipeline is where media is actually processed. Pipelines can be associated with individual cameras or recorded videos through user defined parameters declared in the pipeline topology. Instances of a live topologies are called live pipelines, and instances of a batch topology are referred to as pipeline jobs. 
 
-You can learn more about this in the [pipeline topologies](https://docs.microsoft.com/azure/azure-video-analyzer/video-analyzer-docs/pipeline) concept page.
+You can learn more about this in the [Pipeline](https://docs.microsoft.com/azure/azure-video-analyzer/video-analyzer-docs/pipeline) concept page.
