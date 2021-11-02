@@ -1,0 +1,85 @@
+{
+    "Name": "record-camera-behind-firewall",
+    "Kind": "live",
+    "Sku": {
+    "Name": "Live_S1"
+    },
+    "Properties": {
+        "description": "Sample pipeline topology for capture, record, and stream live video from a camera that is behind a firewall",
+        "parameters": [
+            {
+              "name": "rtspUrlParameter",
+              "type": "String",
+              "description": "RTSP source URL parameter"
+            },
+            {
+              "name": "rtspUsernameParameter",
+              "type": "SecretString",
+              "description": "RTSP source username parameter"
+            },
+            {
+              "name": "rtspPasswordParameter",
+              "type": "SecretString",
+              "description": "RTSP source password parameter"
+            },
+            {
+                "name": "ioTHubDeviceIdParameter",
+                "type": "String",
+                "description": "IoT Hub Device ID parameter"
+            },
+            {
+                "name": "ioTHubNameParameter",
+                "type": "String",
+                "description": "IoT Hub name parameter"
+            },
+            {
+              "name": "videoName",
+              "type": "String",
+              "description": "Video resource name parameter"
+            }
+        ],
+        "sources": [
+            {
+                "@type": "#Microsoft.VideoAnalyzer.RtspSource",
+                "name": "rtspSource",
+                "transport": "tcp",
+                "endpoint": {
+                    "@type": "#Microsoft.VideoAnalyzer.UnsecuredEndpoint",
+                    "url": "${rtspUrlParameter}",
+                    "credentials": {
+                        "@type": "#Microsoft.VideoAnalyzer.UsernamePasswordCredentials",
+                        "username": "${rtspUsernameParameter}",
+                        "password": "${rtspPasswordParameter}"
+                    },
+                    "tunnel": { 
+                        "@type": "#Microsoft.VideoAnalyzer.SecureIotDeviceRemoteTunnel",
+                        "iotHubName" : "${ioTHubNameParameter}",
+                        "deviceId": "${ioTHubDeviceIdParameter}"
+                    }
+                }
+            }
+        ],
+        "sinks": [
+            {
+                "@type": "#Microsoft.VideoAnalyzer.VideoSink",
+                "name": "videoSink",
+                "videoName": "${videoName}",
+                "videoCreationProperties": {
+                  "title": "sample-record-camera-behind-firewall",
+                  "description": "Sample video using CVR from private camera",
+                  "segmentLength": "PT30S",
+                  "retentionPeriod": "P30D"
+                },
+                "videoPublishingOptions": {
+                  "disableRtspPublishing": "false",
+                  "disableArchive": "false"
+                },
+                "inputs": [
+                    {
+                        "nodeName": "rtspSource"
+                    }
+                ]
+            }
+        ]
+    }
+}

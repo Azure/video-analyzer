@@ -1,0 +1,69 @@
+{
+    "Name": "export-from-video-archive",
+    "Kind": "batch",
+    "Sku": {
+        "Name": "Batch_S1"
+    },
+    "Properties": {
+        "description": "Export a portion or clip from a video archive and write to a file, after encoding it to 1080p resolution",
+        "parameters": [
+            {
+                "name": "sourceVideoNameParameter",
+                "type": "string",
+                "description": "Parameter for the name of the source or input video resource"
+            },
+            {
+                "name": "timeSequenceParameter",
+                "type": "string",
+                "description": "Parameter for the start and end timestamp values between which content is extracted and encoded to a file"
+            },
+            {
+                "name": "outputVideoNameParameter",
+                "type": "string",
+                "description": "Parameter for the name of the output video resource to which the MP4 file is written"
+            }
+        ],
+        "sources": [
+            {
+                "@type": "#Microsoft.VideoAnalyzer.VideoSource",
+                "videoName": "${sourceVideoNameParameter}",
+                "timeSequences": {
+                "@type": "#Microsoft.VideoAnalyzer.VideoSequenceAbsoluteTimeMarkers",
+                "ranges": "${timeSequenceParameter}"
+                },
+                "name": "videoSource"
+            }
+        ],
+        "processors": [
+            {
+                "@type": "#Microsoft.VideoAnalyzer.EncoderProcessor",
+                "preset": {
+                "@type": "#Microsoft.VideoAnalyzer.EncoderSystemPreset",
+                    "name": "SingleLayer_1080p_H264_AAC"
+                },
+                "inputs": [
+                {
+                    "nodeName": "videoSource"
+                }
+                ],
+                "name": "encoderProcessor"
+            }
+        ],
+        "sinks": [
+            {
+                "@type": "#Microsoft.VideoAnalyzer.VideoSink",
+                "videoName": "${outputVideoNameParameter}",
+                "videoCreationProperties": {
+                   "title": "export-from-video-archive",
+                   "description": "Sample for exporting portion of recorded video as an MP4 file"
+                },
+                "inputs": [
+                {
+                    "nodeName": "encoderProcessor"
+                }
+                ],
+                "name": "videoSink"
+            }
+        ]
+  }
+}

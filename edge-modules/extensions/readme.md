@@ -8,4 +8,5 @@ This folder contains a set of IoT Edge module extensions that can be used in con
 |---------|-------------|
 |customvision|Docker container to build a custom vision model |
 |intel|Docker containers to build Intel extension modules |
-|yolo|Docker containers to build yolov modules|
+|nvidia|Docker container to build NVIDIA DeepStream extension module |
+|yolo|Docker containers to build yolo modules|

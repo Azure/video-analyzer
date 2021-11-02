@@ -1,8 +1,8 @@
 {
-    "@apiVersion": "1.0",
+    "@apiVersion": "1.1",
     "name":"ObjectTrackingWithHttpExtension",
     "properties":{
-        "description":"My Description",
+        "description":"Track objects in a live video",
         "parameters":[
             {
                 "name":"rtspUrl",
