@@ -287,7 +287,8 @@
             "comments": "Deploys the core resources for Video Analyzer",
             "resourceGroup": "[parameters('resourceGroup')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/resourceGroups',parameters('resourceGroup'))]"
+                "[resourceId('Microsoft.Resources/resourceGroups',parameters('resourceGroup'))]",
+                "deploy-iot-resources"
             ],
             "properties": {
                 "templateLink": {
@@ -297,7 +298,14 @@
                 "parameters": {
                     "namePrefix": {
                         "value": "[parameters('namePrefix')]"
+                    },
+                    "iotHubManagedIdendity": {
+                        "value": "[reference('deploy-iot-resources').outputs.hubIdentityName.value]"
+                    },
+                    "hubName":{
+                        "Value": "[reference('deploy-iot-resources').outputs.hubName.value]"
                     }
+                    
                 }
             }
         },

@@ -30,16 +30,48 @@
             "defaultValue": {
                 "sample": "azure-video-analyzer"
             }
+        },
+        "roleNameGuid": {
+            "type": "string",
+            "defaultValue": "[newGuid()]",
+            "metadata": {
+                "description": "A new GUID used to identify the role assignment"
+            }
         }
+
     },
     "variables": {
         "newHubName": "[concat(parameters('namePrefix'),uniqueString(resourceGroup().id))]",
         "hubName": "[if(empty(parameters('hubName')),variables('newHubName'),parameters('hubName'))]",
-        "hubApiVersion": "2019-11-04",
+        "hubApiVersion": "2021-03-31",
         "hubResourceGroup": "[if(empty(parameters('hubResourceGroup')),resourceGroup().name,parameters('hubResourceGroup'))]",
-        "hubResourceId": "[resourceId(variables('hubResourceGroup'),'Microsoft.Devices/IotHubs',variables('hubName'))]"
+        "hubResourceId": "[resourceId(variables('hubResourceGroup'),'Microsoft.Devices/IotHubs',variables('hubName'))]",
+        "hubIdentityName": "[concat(variables('hubName'), '-identity')]"
     },
     "resources": [
+        {
+
+
+            "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
+            "name": "[variables('hubIdentityName')]",
+            "apiVersion": "2018-11-30",
+            "location": "[resourceGroup().location]"
+        },
+        {
+            "scope": "[concat('Microsoft.Devices/IotHubs/',variables('hubName'))]",
+            "type": "Microsoft.Authorization/roleAssignments",
+            "apiVersion": "2018-09-01-preview",
+            "dependsOn": [
+                "[variables('hubIdentityName')]",
+                "[variables('hubName')]"
+            ],
+            "name": "[parameters('roleNameGuid')]",
+            "properties": {
+                "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+                "principalId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities',variables('hubIdentityName')), '2018-11-30').principalId]",
+                "principleType": "ServicePrincipal"
+            }
+        },    
         {
             "condition": "[empty(parameters('hubName'))]",
             "type": "Microsoft.Devices/IotHubs",
@@ -47,16 +79,38 @@
             "apiVersion": "[variables('hubApiVersion')]",
             "name": "[variables('hubName')]",
             "location": "[resourceGroup().location]",
+            "identity": {
+                "type": "UserAssigned",
+                "userAssignedIdentities": {
+                    "[resourceID('Microsoft.ManagedIdentity/userAssignedIdentities/',variables('hubIdentityName'))]": {}
+                }
+            },
             "sku": {
                 "name": "S1",
                 "capacity": 1
             },
             "properties": {
+                "ipFilterRules": [],
+                "eventHubEndpoints": {
+                    "events": {
+                        "retentionTimeInDays": 7,
+                        "partitionCount": 4
+                    }
+                }
             },
-            "tags": "[parameters('resourceTags')]"
+
+            "tags": "[parameters('resourceTags')]",
+            "dependsOn": [
+                "[resourceID('Microsoft.ManagedIdentity/userAssignedIdentities/',variables('hubIdentityName'))]"
+            ]
         }
+
     ],
     "outputs": {
+        "hubIdentityName": {
+            "type": "string",
+            "value": "[variables('hubIdentityName')]"
+        },
         "hubName": {
             "type": "string",
             "value": "[variables('hubName')]"
