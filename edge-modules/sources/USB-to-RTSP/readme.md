@@ -54,6 +54,8 @@ To use the USB camera stream in AVA, first make sure that the Docker container i
 "value": "rtsp://<YOUR_IP_ADDRESS>/stream1"
 ```
 
+For example, if the IP address of the device is 192.168.1.XXX, then the RTSP URL should be "rtsp://192.168.1.XXX/stream1". By default, the RTSP stream is exposed from port 554. Thus, "rtsp://192.168.1.XXX:554/stream1" is also a valid RTSP URL.
+
 ## Stop and Remove the Container
 If you are finished with the stream, stop the Docker container and remove it.
 
