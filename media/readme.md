@@ -6,14 +6,14 @@ This folder has media files from different datasets that can be used for testing
 
 The following files are from the MEVA dataset
 
-* [People in waiting room 1](https://lvamedia.blob.core.windows.net/public/2018-03-05.10-04-27.10-05-01.bus.G331.mkv)
-* [People in waiting room 2](https://lvamedia.blob.core.windows.net/public/2018-03-05.10-05-01.10-10-01.bus.G331.mkv)
-* [People in waiting room 3](https://lvamedia.blob.core.windows.net/public/2018-03-05.10-10-01.10-15-01.bus.G331.mkv)
-* [Staircase 1](https://lvamedia.blob.core.windows.net/public/2018-03-05.10-27-03.10-30-01.admin.G329.mkv)
-* [Staircase 2](https://lvamedia.blob.core.windows.net/public/2018-03-07.16-50-00.16-55-00.school.G419.mkv)
-* [Cafeteria 1](https://lvamedia.blob.core.windows.net/public/2018-03-05.13-20-00.13-25-00.school.G421.mkv)
-* [Cafeteria 2](https://lvamedia.blob.core.windows.net/public/2018-03-05.14-10-00.14-15-00.school.G421.mkv)
-* [Cafeteria 3](https://lvamedia.blob.core.windows.net/public/2018-03-07.16-50-00.16-55-00.school.G421.mkv)
+* [People in waiting room 1](https://avamedia.blob.core.windows.net/public/2018-03-05.10-04-27.10-05-01.bus.G331.mkv)
+* [People in waiting room 2](https://avamedia.blob.core.windows.net/public/2018-03-05.10-05-01.10-10-01.bus.G331.mkv)
+* [People in waiting room 3](https://avamedia.blob.core.windows.net/public/2018-03-05.10-10-01.10-15-01.bus.G331.mkv)
+* [Staircase 1](https://avamedia.blob.core.windows.net/public/2018-03-05.10-27-03.10-30-01.admin.G329.mkv)
+* [Staircase 2](https://avamedia.blob.core.windows.net/public/2018-03-07.16-50-00.16-55-00.school.G419.mkv)
+* [Cafeteria 1](https://avamedia.blob.core.windows.net/public/2018-03-05.13-20-00.13-25-00.school.G421.mkv)
+* [Cafeteria 2](https://avamedia.blob.core.windows.net/public/2018-03-05.14-10-00.14-15-00.school.G421.mkv)
+* [Cafeteria 3](https://avamedia.blob.core.windows.net/public/2018-03-07.16-50-00.16-55-00.school.G421.mkv)
 
 
 ## OTW dataset
@@ -23,19 +23,19 @@ G. Castanon, N. Shnidman, T. Anderson and J. Byrne, Out the Window: A Crowd-Sour
 
 It is licensed under a [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/). Please see [OTW](https://stresearch.github.io/otw/) for more information.
 
-* [Parking lot 1](https://lvamedia.blob.core.windows.net/public/lots_284.mkv)
-* [Parking lot 2](https://lvamedia.blob.core.windows.net/public/lots_015.mkv)
-* [Home 1](https://lvamedia.blob.core.windows.net/public/homes_00425.mkv)
-* [Home 2](https://lvamedia.blob.core.windows.net/public/homes_00477.mkv)
+* [Parking lot 1](https://avamedia.blob.core.windows.net/public/lots_284.mkv)
+* [Parking lot 2](https://avamedia.blob.core.windows.net/public/lots_015.mkv)
+* [Home 1](https://avamedia.blob.core.windows.net/public/homes_00425.mkv)
+* [Home 2](https://avamedia.blob.core.windows.net/public/homes_00477.mkv)
 
 
 ## Other dataset
-* [Vehicles on freeway - 5 minutes](https://lvamedia.blob.core.windows.net/public/camera-300s.mkv)
-* [Vehicles on freeway - 30 minutes](https://lvamedia.blob.core.windows.net/public/camera-1800s.mkv)
-* [Vehicles on freeway - 60 minutes](https://lvamedia.blob.core.windows.net/public/camera-3600s.mkv)
-* [Toy Car Training Dataset](https://lvamedia.blob.core.windows.net/public/ToyCarTrainingImages.zip)
-* [Toy Car Inference Video](https://lvamedia.blob.core.windows.net/public/t2.mkv)
-* [People waiting in a room - JPG Image](https://lvamedia.blob.core.windows.net/public/people_waiting.jpg)
-* [People in cafeteria - JPG Image](https://lvamedia.blob.core.windows.net/public/people_in_cafeteria.jpg) 
+* [Vehicles on freeway - 5 minutes](https://avamedia.blob.core.windows.net/public/camera-300s.mkv)
+* [Vehicles on freeway - 30 minutes](https://avamedia.blob.core.windows.net/public/camera-1800s.mkv)
+* [Vehicles on freeway - 60 minutes](https://avamedia.blob.core.windows.net/public/camera-3600s.mkv)
+* [Toy Car Training Dataset](https://avamedia.blob.core.windows.net/public/ToyCarTrainingImages.zip)
+* [Toy Car Inference Video](https://avamedia.blob.core.windows.net/public/t2.mkv)
+* [People waiting in a room - JPG Image](https://avamedia.blob.core.windows.net/public/people_waiting.jpg)
+* [People in cafeteria - JPG Image](https://avamedia.blob.core.windows.net/public/people_in_cafeteria.jpg) 
 
 
