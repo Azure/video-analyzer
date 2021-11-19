@@ -74,7 +74,7 @@ container_name=change_to_your_container_name
 az container create \
     --resource-group $resource_group \
     --name $container_name \
-    --image mcr.microsoft.com/lva-utilities/rtspsim-live555:1.2 \
+    --image mcr.microsoft.com/ava-utilities/rtspsim-live555:1.2 \
     --dns-name-label $container_name \
     --ports 554 \
     --azure-file-volume-account-name $storage_account_name \
