@@ -2,7 +2,7 @@
 
 Each sub-folder in this directory contains the JSON file, description, and diagram for a live pipeline topology. 
 
-The following table also lists each topology along with a short description. Clicking on a name redirects to the corresponding JSON file.
+The following table also lists each topology along with a short description. Clicking on a topology name redirects to the corresponding JSON file.
 
 Name | Description | Sample Tutorial
 :----- | :----  | :----
