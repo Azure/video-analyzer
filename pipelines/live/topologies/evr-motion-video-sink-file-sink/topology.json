@@ -1,140 +1,146 @@
 {
-  "@apiVersion": "1.1",
-  "name": "EVRToFilesAndVideoSinkOnMotion",
-  "properties": {
-    "description": "Event-based video recording to local files based on motion events",
-    "parameters": [
-      {
-        "name": "rtspUserName",
-        "type": "String",
-        "description": "rtsp source user name.",
-        "default": "dummyUserName"
-      },
-      {
-        "name": "rtspPassword",
-        "type": "String",
-        "description": "rtsp source password.",
-        "default": "dummyPassword"
-      },
-      {
-        "name": "rtspUrl",
-        "type": "String",
-        "description": "rtsp Url"
-      },
-      {
-        "name": "motionSensitivity",
-        "type": "String",
-        "description": "motion detection sensitivity",
-        "default": "medium"
-      },
-      {
-        "name": "fileSinkOutputName",
-        "type": "String",
-        "description": "file sink output name",
-        "default": "filesinkOutput"
-      }
-    ],
-    "sources": [
-      {
-        "@type": "#Microsoft.VideoAnalyzer.RtspSource",
-        "name": "rtspSource",
-        "endpoint": {
-          "@type": "#Microsoft.VideoAnalyzer.UnsecuredEndpoint",
-          "url": "${rtspUrl}",
-          "credentials": {
-            "@type": "#Microsoft.VideoAnalyzer.UsernamePasswordCredentials",
-            "username": "${rtspUserName}",
-            "password": "${rtspPassword}"
-          }
-        }
-      }
-    ],
-    "processors": [
-      {
-        "@type": "#Microsoft.VideoAnalyzer.MotionDetectionProcessor",
-        "name": "motionDetection",
-        "sensitivity": "${motionSensitivity}",
-        "inputs": [
-          {
-            "nodeName": "rtspSource",
-            "outputSelectors": [
-              {
-                "property": "mediaType",
-                "operator": "is",
-                "value": "video"
-              }
-            ]
-          }
+    "systemData": {
+        "createdAt": "2021-12-03T22:31:55.816Z",
+        "lastModifiedAt": "2021-12-03T22:39:05.662Z"
+    },
+    "name": "EVRToFilesAndVideoSinkOnMotion",
+    "properties": {
+        "description": "Event-based video recording to local files based on motion events",
+        "parameters": [
+            {
+                "name": "fileSinkOutputName",
+                "type": "string",
+                "description": "file sink output name",
+                "default": "filesinkOutput"
+            },
+            {
+                "name": "motionSensitivity",
+                "type": "string",
+                "description": "motion detection sensitivity",
+                "default": "medium"
+            },
+            {
+                "name": "rtspPassword",
+                "type": "string",
+                "description": "rtsp source password.",
+                "default": "dummyPassword"
+            },
+            {
+                "name": "rtspUrl",
+                "type": "string",
+                "description": "rtsp Url"
+            },
+            {
+                "name": "rtspUserName",
+                "type": "string",
+                "description": "rtsp source user name.",
+                "default": "dummyUserName"
+            }
+        ],
+        "sources": [
+            {
+                "@type": "#Microsoft.VideoAnalyzer.RtspSource",
+                "name": "rtspSource",
+                "transport": "tcp",
+                "endpoint": {
+                    "@type": "#Microsoft.VideoAnalyzer.UnsecuredEndpoint",
+                    "url": "${rtspUrl}",
+                    "credentials": {
+                        "@type": "#Microsoft.VideoAnalyzer.UsernamePasswordCredentials",
+                        "username": "${rtspUserName}",
+                        "password": "${rtspPassword}"
+                    }
+                }
+            }
+        ],
+        "processors": [
+            {
+                "@type": "#Microsoft.VideoAnalyzer.MotionDetectionProcessor",
+                "sensitivity": "${motionSensitivity}",
+                "eventAggregationWindow": "PT1S",
+                "name": "motionDetection",
+                "inputs": [
+                    {
+                        "nodeName": "rtspSource",
+                        "outputSelectors": [
+                            {
+                                "property": "mediaType",
+                                "operator": "is",
+                                "value": "video"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "@type": "#Microsoft.VideoAnalyzer.SignalGateProcessor",
+                "activationEvaluationWindow": "PT1S",
+                "activationSignalOffset": "PT0S",
+                "minimumActivationTime": "PT30S",
+                "maximumActivationTime": "PT30S",
+                "name": "signalGateProcessor",
+                "inputs": [
+                    {
+                        "nodeName": "motionDetection",
+                        "outputSelectors": []
+                    },
+                    {
+                        "nodeName": "rtspSource",
+                        "outputSelectors": [
+                            {
+                                "property": "mediaType",
+                                "operator": "is",
+                                "value": "video"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "sinks": [
+            {
+                "@type": "#Microsoft.VideoAnalyzer.FileSink",
+                "baseDirectoryPath": "/var/media",
+                "fileNamePattern": "sampleFilesFromEVR-${System.TopologyName}-${System.PipelineName}-${fileSinkOutputName}-${System.Runtime.DateTime}",
+                "maximumSizeMiB": "512",
+                "name": "fileSink",
+                "inputs": [
+                    {
+                        "nodeName": "signalGateProcessor",
+                        "outputSelectors": [
+                            {
+                                "property": "mediaType",
+                                "operator": "is",
+                                "value": "video"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "@type": "#Microsoft.VideoAnalyzer.VideoSink",
+                "localMediaCachePath": "/var/lib/videoanalyzer/tmp/",
+                "localMediaCacheMaximumSizeMiB": "2048",
+                "videoName": "sample-motion-video-sink-files",
+                "videoCreationProperties": {
+                    "title": "sample-motion-video-sink-files",
+                    "description": "Sample video using motion video sink and files",
+                    "segmentLength": "PT30S"
+                },
+                "name": "videoSink",
+                "inputs": [
+                    {
+                        "nodeName": "signalGateProcessor",
+                        "outputSelectors": [
+                            {
+                                "property": "mediaType",
+                                "operator": "is",
+                                "value": "video"
+                            }
+                        ]
+                    }
+                ]
+            }
         ]
-      },
-      {
-        "@type": "#Microsoft.VideoAnalyzer.SignalGateProcessor",
-        "name": "signalGateProcessor",
-        "inputs": [
-          {
-            "nodeName": "motionDetection"
-          },
-          {
-            "nodeName": "rtspSource",
-            "outputSelectors": [
-              {
-                "property": "mediaType",
-                "operator": "is",
-                "value": "video"
-              }
-            ]
-          }
-        ],
-        "activationEvaluationWindow": "PT1S",
-        "activationSignalOffset": "PT0S",
-        "minimumActivationTime": "PT30S",
-        "maximumActivationTime": "PT30S"
-      }
-    ],
-    "sinks": [
-      {
-        "@type": "#Microsoft.VideoAnalyzer.VideoSink",
-        "name": "videoSink",
-        "videoName": "sample-motion-video-sink-files",
-        "inputs": [
-          {
-            "nodeName": "rtspSource",
-            "outputSelectors": [
-              {
-                "property": "mediaType",
-                "operator": "is",
-                "value": "video"
-              }
-            ]
-          }
-        ],
-        "videoCreationProperties": {
-          "title": "sample-motion-video-sink-files",
-          "description": "Sample video using motion video sink and files",
-          "segmentLength": "PT30S"
-        },
-        "localMediaCachePath": "/var/lib/videoanalyzer/tmp/",
-        "localMediaCacheMaximumSizeMiB": "2048"
-      },
-      {
-        "@type": "#Microsoft.VideoAnalyzer.FileSink",
-        "name": "fileSink",
-        "inputs": [
-          {
-            "nodeName": "signalGateProcessor",
-            "outputSelectors": [
-              {
-                "property": "mediaType",
-                "operator": "is",
-                "value": "video"
-              }
-            ]
-          }
-        ],
-        "fileNamePattern": "sampleFilesFromEVR-${System.TopologyName}-${System.PipelineName}-${fileSinkOutputName}-${System.Runtime.DateTime}",
-        "maximumSizeMiB": "512",
-        "baseDirectoryPath": "/var/media"
-      }
-    ]
-  }
+    }
 }
