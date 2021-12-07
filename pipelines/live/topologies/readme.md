@@ -2,7 +2,7 @@
 
 Each sub-folder in this directory contains the JSON file, description, and diagram for a live pipeline topology. The following table also lists each topology along with a short description. Clicking on a topology name redirects to the corresponding JSON file.
 
-Name | Description | Sample Tutorials | [VSCode](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.azure-video-analyzer) Sample Name
+Name | Description | Sample Tutorials | [VSCode](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.azure-video-analyzer) Name
 :----- | :----  | :---- | :---
 [ai-composition](ai-composition/topology.json) | Run 2 AI inferencing models of your choice. In this example, classified video frames are sent from an AI inference engine using the [Tiny YOLOv3 model](https://github.com/Azure/video-analyzer/tree/main/edge-modules/extensions/yolo/tinyyolov3/grpc-cpu) to another engine using the [YOLOv3 model](https://github.com/Azure/video-analyzer/tree/main/edge-modules/extensions/yolo/yolov3/grpc-cpu). Having such a topology enables you to trigger a heavy AI module, only when a light AI module indicates a need to do so. | [Analyze live video streams with multiple AI models using AI composition](https://docs.microsoft.com/en-us/azure/azure-video-analyzer/video-analyzer-docs/edge/analyze-ai-composition) | AI Composition > Record to AMS asset using multiple AI models
 [audio-video](audio-video\topology.json) | Capture video and continuously record it to an Azure Video Analyzer video. Additionally, record audio using the **outputSelectors** property. | | Continuous Video Recording > Record audio with video
