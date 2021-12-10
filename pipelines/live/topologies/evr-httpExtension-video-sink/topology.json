@@ -2,7 +2,7 @@
   "@apiVersion": "1.1",
   "name": "EVRtoVideoSinkByHttpExtension",
   "properties": {
-    "description": "Event-based video recording to Video Sink based on events from http extension",
+    "description": "Event-based video recording to Video Sink based on events from HTTP extension",
     "parameters": [
       {
         "name": "rtspUserName",
