@@ -126,7 +126,7 @@
         {
           "@type": "#Microsoft.VideoAnalyzer.VideoSink",
           "name": "videoSink",
-          "videoName": "sample-cvr-with-inference-metadata",
+          "videoName": "sample-cvr-inference-metadata",
           "inputs": [
             {
               "nodeName": "rtspSource",

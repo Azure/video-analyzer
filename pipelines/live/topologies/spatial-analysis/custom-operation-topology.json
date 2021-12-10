@@ -131,7 +131,7 @@
         {
           "@type": "#Microsoft.VideoAnalyzer.VideoSink",
           "name": "videoSink",
-          "videoName": "Ignite-Spatial-Analysis-${System.TopologyName}",
+          "videoName": "SA-${System.TopologyName}",
           "inputs": [
             {
               "nodeName": "signalGateProcessor"

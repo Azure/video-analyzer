@@ -158,7 +158,7 @@
       {
         "@type": "#Microsoft.VideoAnalyzer.VideoSink",
         "name": "videoSink",
-        "videoName": "sample-motion-with-http-extension",
+        "videoName": "sample-motion-http-extension",
         "inputs": [
           {
             "nodeName": "signalGateProcessor",
