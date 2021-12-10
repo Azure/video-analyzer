@@ -181,7 +181,7 @@
       {
         "@type": "#Microsoft.VideoAnalyzer.VideoSink",
         "name": "videoSink",
-        "videoName": "sample-motion-with-grpc-extension",
+        "videoName": "sample-motion-grpc-extension",
         "inputs": [
           {
             "nodeName": "signalGateProcessor",
