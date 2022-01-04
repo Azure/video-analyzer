@@ -11,7 +11,7 @@ RUN apt-get update -y && \
     pip3 install --upgrade pip
 
 # Install python packages
-RUN pip install numpy onnxruntime flask pillow gunicorn requests && \
+RUN pip install onnxruntime flask pillow gunicorn requests numpy==1.19.4 && \
     apt-get clean
 
 # Install runit, nginx
