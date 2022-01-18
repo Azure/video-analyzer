@@ -25,7 +25,7 @@ YOLOv3:
 
 > <span> [!TIP] </span>  
 > If you do not wish to build the local Dockerfile, you may pull it off of Microsoft Container Registry and skip the following step <br>
-> `docker run --name my_yolo_container -p 8080:80 -d  -i mcr.microsoft.com/lva-utilities/lvaextension:http-yolov3-onnx-v1.0`
+> `docker run --name my_yolo_container -p 8080:80 -d  -i mcr.microsoft.com/ava-utilities/avaextension:http-yolov3-onnx-v1.0`
 
 
 ## Running and testing
