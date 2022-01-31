@@ -390,7 +390,7 @@
                             },
                             "properties": {
                                 "forceUpdateTag": "[parameters('baseTime')]",
-                                "azCliVersion": "2.20.0",
+                                "azCliVersion": "2.32.0",
                                 "primaryScriptUri": "[uri(parameters('_artifactsLocation'),'iot-edge-setup.sh')]",
                                 "environmentVariables": [
                                     {
@@ -495,7 +495,7 @@
                             "comments": "The values for VIDEO_OUTPUT_FOLDER_ON_DEVICE, VIDEO_INPUT_FOLDER_ON_DEVICE and APPDATA_FOLDER_ON_DEVICE must match the hardcoded values in prepare-device.sh.",
                             "properties": {
                                 "forceUpdateTag": "[parameters('baseTime')]",
-                                "azCliVersion": "2.20.0",
+                                "azCliVersion": "2.32.0",
                                 "primaryScriptUri": "[uri(variables('_artifactsLocation'),'deploy-modules.sh')]",
                                 "supportingScriptUris": [
                                     "[uri(variables('_artifactsLocation'),concat(parameters('scenario'),'.modules.json'))]"
