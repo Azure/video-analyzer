@@ -73,6 +73,25 @@
             }
         },    
         {
+    "type": "Microsoft.Resources/deploymentScripts",
+    "comments": "adding a delay to allow for the role assignement to propagate through AAD",
+    "dependsOn": [ 
+        "[variables('hubIdentityName')]"
+        ],
+    "apiVersion": "2020-10-01",
+    "name": "managed-identity-role-delayComplete",
+    "location": "[resourceGroup().location]",
+    "kind": "AzurePowerShell",
+    "properties": {
+        "azPowerShellVersion": "5.0",
+        "forceUpdateTag": "1.0",
+        "scriptContent": "Start-Sleep -s 60",
+        "timeout": "PT30M",
+        "cleanupPreference": "Always",
+        "retentionInterval": "PT1H"
+    }
+},
+        {
             "condition": "[empty(parameters('hubName'))]",
             "type": "Microsoft.Devices/IotHubs",
             "comments": "Video Analyzer is hosted on an IoT Edge device. The host device is managed through an IoT Hub. The keys for accessing the hub are in the template's output.",
@@ -101,7 +120,7 @@
 
             "tags": "[parameters('resourceTags')]",
             "dependsOn": [
-                "[resourceID('Microsoft.ManagedIdentity/userAssignedIdentities/',variables('hubIdentityName'))]"
+                "managed-identity-role-delayComplete"
             ]
         }
 
