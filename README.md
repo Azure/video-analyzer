@@ -1,5 +1,7 @@
 
-# Azure Video Analyzer
+# Deprecated - Azure Video Analyzer
+
+We’re retiring the Azure Video Analyzer preview service, you're advised to transition your applications off of Video Analyzer by 01 December 2022. This repo is no longer being maintained.
 
 ## Introduction
 
